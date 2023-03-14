@@ -28,7 +28,12 @@ function FriendsBody({ setState, setNav }) {
                     <input type="text" className='searchInput' style={{ width: width, border: border }} placeholder="Search friends" />
                     <button onClick={openSearch} className='friendSearch'>{icon}</button>
                 </div>
-                <button className='findFriend' onClick={()=>showFindFriend()}><HiUserAdd/></button>
+                <button 
+                    className='findFriend' 
+                    onClick={()=>showFindFriend()}>
+                        <HiUserAdd/>
+                        <span className='notification-badge'></span>
+                </button>
             </div>
             <div className="chat-friend-list pt-4">
                 {!friends === null ? (

@@ -1,6 +1,6 @@
 .home-page {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 40px);
     padding: 0;
     background: linear-gradient(201deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0)), url('https://images.pexels.com/photos/4644812/pexels-photo-4644812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
     background-size: cover;
@@ -19,6 +19,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #282a37;
+    height: calc(100vh - 40px);
 }
 
 .user-nav .chat-frnd {
@@ -58,10 +59,8 @@
     flex-direction: column;
 }
 
-.avatar-container {
+.user-nav img {
     border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
     cursor: pointer;
 }
 
@@ -94,8 +93,10 @@
 
 .friends-nav {
     background-color: #282a37;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+    height: calc(100vh - 40px);
+    flex-direction: column;
 }
 
 .friends-nav .heading {
@@ -137,6 +138,15 @@
     border: 0;
     outline: 0;
 }
+.notification-badge {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    top: 8px;
+    right: 1px;
+    background-color: red;
+    border-radius: 50%;
+}
 .find-friend-heading {
     display: flex;
     justify-content: space-between;
@@ -145,7 +155,9 @@
 .find-friend-div {
     position: absolute;
     width: 100%;
-    height: calc(100% - 30px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     z-index: 2;
     background: linear-gradient(360deg, #232531, #181820);
     border-radius: 20px;
@@ -178,6 +190,84 @@
     right: 10px;
     color: #01acfc;
     font-size: 1.4rem;
+}
+.find-friends-body {
+    flex: 1;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+.find-friends-body-title {
+    margin-top: 10px;
+}
+.find-friends-body::-webkit-scrollbar {
+    display: none;
+}
+.find-friends-body-title .card {
+    background-color: #282a37;
+    font-size: 1rem;
+    padding: 0 10px;
+    border-radius: 10px;
+}
+
+.find-friends-body-title .card .friends-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    padding-left: 5px;
+}
+.find-friends-body-title .card .friends-card img {
+    border-radius: 50%;
+}
+.friends-card .name-conatiner {
+    flex-grow: 1;
+}
+.friends-card .cancel-req {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 1rem;
+    color: red;
+    transition: .5s;
+}
+.friends-card .cancel-req:hover {
+    font-size: 1.3rem;
+}
+.friends-card .accept-req {
+    outline: 0;
+    border: 0;
+    padding: 5px 10px;
+    font-size: .8rem;
+    border-radius: 20px;
+    background-color: #3380fc;
+    color: #fff;
+    font-weight: 600;
+}
+.friends-card .add-req {
+    position: relative;
+    width: 40px;
+}
+.friends-card .add-req button {
+    margin: 0;
+    outline: 0;
+    border: 0;
+    background-color: #3380fc;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    z-index: 2;
+    border-radius: 50%;
+    color: #fff;
+}
+.friends-card .add-req p {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    font-size: 1.3rem;
+    top: 0;
+    right: .5rem;
+}
+.friends-card .accept-req:hover, .add-req button:hover {
+    background-color: #1a91ff;
 }
 
 .search-field input {

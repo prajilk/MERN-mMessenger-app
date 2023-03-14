@@ -60,21 +60,22 @@ function ChatsPage() {
                             <p><HiChatAlt2 /></p>
                         </div>
                         <div className={`chat-frnd p-4 ${navActive === 'friend' ? 'active' : ''}`} id='friend-active'>
-                            <p><HiUsers /></p>
+                            <p>
+                                <HiUsers />
+                                <span className='notification-badge'></span>
+                            </p>
                         </div>
                     </div>
-                    <div className='avatar-container'>
-                        <img
-                            src={`https://ui-avatars.com/api/?name=${user.fullname}&background=0D8ABC&color=fff`}
-                            alt=".."
-                            width={'40px'} />
-                    </div>
+                    <img
+                        src={`https://ui-avatars.com/api/?name=${user.fullname}&background=0D8ABC&color=fff`}
+                        alt=".."
+                        width={'40px'} />
                 </div>
-                <div class="friends-nav col-md-3 p-0 pt-3">
+                <div class="friends-nav col-md-4 p-0">
                     <FindFriend/>
                     {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody setState={setChatBody} setNav={setNavActive} />}
                 </div>
-                <div class="chat-area col-md-8 p-3">
+                <div class="chat-area col-md-7">
                     {!activeMessage === null ? (
                         <MessageBody />
                     ) : (
