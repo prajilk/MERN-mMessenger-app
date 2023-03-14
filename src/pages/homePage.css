@@ -76,10 +76,12 @@
     border-radius: 20px;
     padding: 10px;
 }
+
 .no-chats p {
     font-size: 1rem;
     color: darkgray;
 }
+
 .no-chats button {
     outline: 0;
     border: 0;
@@ -92,17 +94,21 @@
 
 .friends-nav {
     background-color: #282a37;
+    overflow: hidden;
 }
 
 .friends-nav .heading {
     display: flex;
     justify-content: space-between;
     position: relative;
+    animation: .5s ease-out 0s 1 slideInFromLeft;
 }
+
 .search-field {
     display: flex;
     justify-content: end;
 }
+
 .search-field button {
     position: absolute;
     background: transparent;
@@ -114,6 +120,27 @@
     margin: 0;
     padding: 0;
 }
+
+.search-field .friendSearch {
+    right: 35px;
+}
+
+.heading .findFriend {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    color: #fff;
+    top: -5px;
+    border: 0;
+    outline: 0;
+}
+
+.search-field .searchInput {
+    right: 30px;
+}
+
 .search-field input {
     position: absolute;
     transition: 0.5s ease-in-out;
@@ -125,6 +152,7 @@
     outline: 0;
     border-radius: 10px;
 }
+
 .search-field input:focus {
     padding-left: 15px;
 }
@@ -187,19 +215,24 @@ small {
     background: linear-gradient(360deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2));
     border-radius: 20px;
 }
+
 .no-message-active p {
     color: darkgray;
     font-size: 1rem;
 }
-
+.chat-friend-list {
+    animation: .5s ease-out 0s 1 slideInFromLeft;
+}
 .chat-area {
     background-color: #282a37;
     display: flex;
     flex-direction: column;
 }
+
 .chat-header {
     cursor: pointer;
 }
+
 .chat-header img {
     border-radius: 50%;
 }
@@ -211,10 +244,12 @@ small {
 .chat-header .user-details small {
     color: darkgray;
 }
+
 .body-container {
     background: linear-gradient(360deg, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0));
     border-radius: 20px;
 }
+
 .chat-body {
     width: 100%;
     height: 400px;
@@ -267,4 +302,18 @@ form .send-button {
     border: 0;
     color: #1a91ff;
     font-size: 1.4rem;
+}
+
+
+
+
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }
