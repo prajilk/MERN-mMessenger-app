@@ -16,15 +16,19 @@ function FriendsBody({ setState, setNav }) {
         setIcon(icon.type === HiSearch ? <HiX /> : <HiSearch />);
     }
 
+    function showFindFriend(){
+        document.getElementById('find-friend-div').style.transform = 'translateX(0)';
+    }
+
     return (
-        <>
+        <div style={{padding: '20px'}}>
             <div className='heading'>
                 <h4>Friends</h4>
                 <div className='search-field d-flex'>
                     <input type="text" className='searchInput' style={{ width: width, border: border }} placeholder="Search friends" />
                     <button onClick={openSearch} className='friendSearch'>{icon}</button>
                 </div>
-                <button className='findFriend'><HiUserAdd/></button>
+                <button className='findFriend' onClick={()=>showFindFriend()}><HiUserAdd/></button>
             </div>
             <div className="chat-friend-list pt-4">
                 {!friends === null ? (
@@ -41,7 +45,7 @@ function FriendsBody({ setState, setNav }) {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 

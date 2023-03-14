@@ -6,6 +6,7 @@ import { HiChatAlt2, HiUsers } from 'react-icons/hi';
 import MessageBody from './Components/MessageBody';
 import ChatBody from './Components/ChatBody';
 import FriendsBody from './Components/FriendsBody';
+import FindFriend from './Components/FindFriend';
 
 function ChatsPage() {
 
@@ -69,7 +70,8 @@ function ChatsPage() {
                             width={'40px'} />
                     </div>
                 </div>
-                <div class="friends-nav col-md-3 p-3">
+                <div class="friends-nav col-md-3 p-0 pt-3">
+                    <FindFriend/>
                     {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody setState={setChatBody} setNav={setNavActive} />}
                 </div>
                 <div class="chat-area col-md-8 p-3">

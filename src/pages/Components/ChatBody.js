@@ -17,7 +17,7 @@ function ChatBody({ setState, setNav }) {
     }
 
     return (
-        <>
+        <div style={{padding: '20px'}}>
             <div className='heading'>
                 <h4>Chats</h4>
                 <div className='search-field d-flex'>
@@ -39,7 +39,7 @@ function ChatBody({ setState, setNav }) {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 

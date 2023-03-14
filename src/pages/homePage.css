@@ -95,6 +95,7 @@
 .friends-nav {
     background-color: #282a37;
     overflow: hidden;
+    position: relative;
 }
 
 .friends-nav .heading {
@@ -125,7 +126,7 @@
     right: 35px;
 }
 
-.heading .findFriend {
+.find-friend-heading .findFriend, .heading .findFriend {
     background: transparent;
     padding: 0;
     margin: 0;
@@ -136,9 +137,47 @@
     border: 0;
     outline: 0;
 }
-
-.search-field .searchInput {
-    right: 30px;
+.find-friend-heading {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+.find-friend-div {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 30px);
+    z-index: 2;
+    background: linear-gradient(360deg, #232531, #181820);
+    border-radius: 20px;
+    padding: 20px;
+    transform: translateX(100%);
+    transition: 0.5s ease-in-out;
+}
+.find-friend-input {
+    position: relative;
+    margin-top: 10px;
+}
+.find-friend-input input {
+    outline: 0;
+    border: 1px solid #01acfc;
+    border-radius: 20px;
+    width: 100%;
+    height: 40px;
+    font-size: .9rem;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 40px;
+    color: #fff;
+    background-color: #282a37;
+}
+.find-friend-input button {
+    position: absolute;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    right: 10px;
+    color: #01acfc;
+    font-size: 1.4rem;
 }
 
 .search-field input {
@@ -151,6 +190,9 @@
     padding: 0;
     outline: 0;
     border-radius: 10px;
+}
+.search-field .searchInput {
+    right: 30px;
 }
 
 .search-field input:focus {
