@@ -16,6 +16,7 @@ function MessageBody() {
                 {width <= 480 ? 
                     <div onClick={width <= 480 ? goBackToFriends : ''}>
                         {width <= 480 ? <span className='text-white me-2'><HiArrowLeft/></span> : '' }
+                        {/* getAvatar(data.fullname, data.color) */}
                     <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
                     </div> : 
                     <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />

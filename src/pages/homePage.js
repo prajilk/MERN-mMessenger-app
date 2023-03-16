@@ -14,6 +14,7 @@ import FindFriend from './Components/FriendsBody/FindFriend';
 import UserProfile from './Components/UserProfile/UserProfile';
 import { AppContext } from '../context/AppContext';
 import Modal from './Components/Modal/Modal';
+import { getAvatar } from '../api/avatarUrl';
 
 function ChatsPage() {
 
@@ -87,7 +88,7 @@ function ChatsPage() {
                     <div className='profile-container'>
                         <img
                             onClick={showUserProfile}
-                            src={`https://ui-avatars.com/api/?name=${user.fullname}&background=0D8ABC&color=fff`}
+                            src={getAvatar(user.fullname, user.color)}
                             alt=".."
                             width={'40px'} />
                         <button className='trans-btn signout' onClick={signOut}><FaPowerOff /></button>
