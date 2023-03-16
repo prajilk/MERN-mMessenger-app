@@ -54,7 +54,8 @@
     right: 35px;
 }
 
-.find-friend-heading .findFriend, .heading .findFriend {
+.find-friend-heading .findFriend,
+.heading .findFriend {
     background: transparent;
     padding: 0;
     margin: 0;
@@ -65,6 +66,7 @@
     border: 0;
     outline: 0;
 }
+
 .notification-badge {
     position: absolute;
     width: 7px;
@@ -74,11 +76,13 @@
     background-color: red;
     border-radius: 50%;
 }
+
 .find-friend-heading {
     display: flex;
     justify-content: space-between;
     position: relative;
 }
+
 .find-friend-div {
     position: absolute;
     width: 100%;
@@ -92,10 +96,12 @@
     transform: translateX(100%);
     transition: 0.5s ease-in-out;
 }
+
 .find-friend-input {
     position: relative;
     margin-top: 10px;
 }
+
 .find-friend-input input {
     outline: 0;
     border: 1px solid #01acfc;
@@ -109,6 +115,7 @@
     color: #fff;
     background-color: #282a37;
 }
+
 .find-friend-input button {
     position: absolute;
     border: 0;
@@ -118,17 +125,21 @@
     color: #01acfc;
     font-size: 1.4rem;
 }
+
 .find-friends-body {
     flex: 1;
     flex-direction: column;
     overflow-y: scroll;
 }
+
 .find-friends-body-title {
     margin-top: 10px;
 }
+
 .find-friends-body::-webkit-scrollbar {
     display: none;
 }
+
 .find-friends-body-title .card {
     background-color: #282a37;
     font-size: 1rem;
@@ -142,12 +153,15 @@
     padding: 15px 0;
     padding-left: 5px;
 }
+
 .find-friends-body-title .card .friends-card img {
     border-radius: 50%;
 }
+
 .friends-card .name-conatiner {
     flex-grow: 1;
 }
+
 .friends-card .cancel-req {
     border: 0;
     outline: 0;
@@ -156,9 +170,11 @@
     color: red;
     transition: .5s;
 }
+
 .friends-card .cancel-req:hover {
     font-size: 1.3rem;
 }
+
 .friends-card .accept-req {
     outline: 0;
     border: 0;
@@ -169,10 +185,12 @@
     color: #fff;
     font-weight: 600;
 }
+
 .friends-card .add-req {
     position: relative;
     width: 40px;
 }
+
 .friends-card .add-req button {
     margin: 0;
     outline: 0;
@@ -184,16 +202,17 @@
     z-index: 2;
     border-radius: 50%;
     color: #fff;
+    font-size: 1.1rem;
 }
-.friends-card .add-req p {
-    padding: 0;
-    margin: 0;
+.friends-card .add-req button .FaUserPlus {
     position: absolute;
     font-size: 1.1rem;
-    top: 4px;
+    top: 11px;
     right: .6rem;
 }
-.friends-card .accept-req:hover, .add-req button:hover {
+
+.friends-card .accept-req:hover,
+.add-req button:hover {
     background-color: #1a91ff;
 }
 
@@ -208,6 +227,7 @@
     outline: 0;
     border-radius: 10px;
 }
+
 .search-field .searchInput {
     right: 30px;
 }
@@ -262,6 +282,58 @@ small {
     font-size: .8rem;
 }
 
+/* //////////\\\\\\\\\\\ */
+
+.skeleton_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.image-holder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.name-holder {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.fullname_skeleton {
+    width: 90%;
+    height: 10px;
+    border-radius: 10px;
+    animation: skeleton-loading 1s linear infinite alternate;
+    margin-bottom: 5px;
+}
+
+.username_skeleton {
+    width: 70%;
+    height: 8px;
+    border-radius: 10px;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.add-friend_skeleton {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(180, 2%, 24%);
+    }
+
+    100% {
+        background-color: hsl(240, 1%, 39%);
+    }
+}
 
 @media only screen and (min-width: 320px) and (max-width: 480px) {
     .search-field input {

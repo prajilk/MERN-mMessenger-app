@@ -8,27 +8,47 @@ function FindFriend() {
 
     const [searchResults, setSearchResults] = useState([]);
     const [isResult, setIsResult] = useState(false);
+    const [isResultLoaded, setIsResultLoaded] = useState(true);
 
     function hideFindFriend() {
         document.getElementById('find-friend-div').style.transform = 'translateX(100%)';
     }
 
     const searchData = (e) => {
+        setIsResultLoaded(false);
+        setSearchResults([]);
         let match = e.target.value.match(/^[a-zA-Z 0-9]*/);
         let match2 = e.target.value.match(/\s*/);
         if (match2[0] === e.target.value) {
             setSearchResults([]);
             setIsResult(false);
+            setIsResultLoaded(true);
             return;
         }
         if (match[0] === e.target.value) {
             axios.post('/find-friends', { query: e.target.value })
                 .then((res) => {
-                    res.data.searchResults.length === 0 && setIsResult(true)
+                    res.data.searchResults.length === 0 && setIsResult(true);
+                    setIsResultLoaded(true);
                     setSearchResults(res.data.searchResults);
                 })
             return;
         }
+    }
+
+    const Placeholder = () => {
+        return (
+            <div className='card p-2'>
+                <div className="skeleton_container">
+                    <div className="image-holder"></div>
+                    <div className="name-holder p-2">
+                        <div className="fullname_skeleton"></div>
+                        <div className="username_skeleton"></div>
+                    </div>
+                    <div className="add-friend_skeleton"></div>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -39,10 +59,12 @@ function FindFriend() {
             </div>
             <div className='find-friend-input'>
                 <input type="text" name='find-friend' onChangeCapture={searchData} placeholder='Enter name' />
-                {/* <button><HiSearch /></button> */}
             </div>
             <div className="find-friends-body">
-
+                { !isResultLoaded && <div className='find-friends-body-title'>
+                    <h6>Search result</h6>
+                    <Placeholder/>
+                </div> }
                 { searchResults.length !== 0 ? <div className='find-friends-body-title'>
                     <h6>Search results</h6>
                     <div className="card">
@@ -55,15 +77,15 @@ function FindFriend() {
                                         <small>@{data.username}</small>
                                     </div>
                                     <div className='add-req'>
-                                        <button><p><FaUserPlus /></p></button>
+                                        <button><FaUserPlus className='FaUserPlus'/></button>
                                     </div>
                                 </div>
                                 <hr className='m-0' />
                             </div>)
                         })}
                     </div>
-                </div> : 
-                isResult && 
+                </div> :
+                    isResult &&
                     (<div className='find-friends-body-title'>
                         <h6>Search results</h6>
                         <div className="card">
@@ -90,7 +112,7 @@ function FindFriend() {
                 </div>
             </div>
         </div>
-            )
+    )
 }
 
-            export default FindFriend;
+export default FindFriend;
