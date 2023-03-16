@@ -1,6 +1,14 @@
 #root {
     padding: 20px 0;
     background-color: #282a37;
+    overflow-y: scroll;
+}
+#root::-webkit-scrollbar {
+    display: none;
+}
+
+.modal-backdrop {
+    display: none;
 }
 
 .login-page, .signup-page {
@@ -12,7 +20,7 @@
     display: flex;
     gap: 20px;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
 }
 .logo-container img {
@@ -82,6 +90,19 @@
     text-decoration: none;
 }
 
+.trans-btn {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    outline: 0;
+    color: #fff;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    #root {
+        padding-top: 5px;
+    }
+}
 
 @media only screen and (max-width: 500px) {
     .outside-card p, .card form p, .card form input::placeholder, .card form .btn {

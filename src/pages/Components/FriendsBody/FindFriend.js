@@ -1,5 +1,6 @@
 import React from 'react'
 import { HiSearch, HiUserAdd, HiX } from 'react-icons/hi';
+import { FaUserPlus } from 'react-icons/fa';
 
 function FindFriend() {
 
@@ -31,7 +32,7 @@ function FindFriend() {
                                 <small>@prajil2001</small>
                             </div>
                             <div className='add-req'>
-                                <button><p><HiUserAdd/></p></button>
+                                <button><p><FaUserPlus/></p></button>
                             </div>
                         </div>
                         <hr className='m-0' />

@@ -1,0 +1,115 @@
+.no-message-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(360deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2));
+    border-radius: 20px;
+}
+
+.no-message-active p {
+    color: darkgray;
+    font-size: 1rem;
+}
+.chat-friend-list {
+    animation: .5s ease-out 0s 1 slideInFromLeft;
+}
+.chat-area {
+    background-color: #282a37;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.chat-header {
+    cursor: pointer;
+}
+
+.chat-header img {
+    border-radius: 50%;
+}
+
+.chat-header .user-details h6 {
+    color: white;
+}
+
+.chat-header .user-details small {
+    color: darkgray;
+}
+
+.body-container {
+    background: linear-gradient(360deg, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0.1));
+    border-radius: 20px;
+}
+
+.chat-body {
+    width: 100%;
+    height: 400px;
+    flex-grow: 1;
+    color: #fff;
+    padding: 20px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.chat-body::-webkit-scrollbar {
+    display: none;
+}
+
+.chat-message {
+    margin: 5px;
+    padding: 7px;
+    max-width: 90%;
+    background-color: #3e404d;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    color: #fff;
+    align-self: flex-start;
+}
+
+form {
+    width: 100%;
+    padding: 10px;
+    position: relative;
+}
+
+form input {
+    width: 100%;
+    padding: 5px;
+    padding-left: 15px;
+    border-radius: 10px;
+    border: 2px solid #1a91ff;
+    background-color: #282a37;
+    outline: 0;
+    color: #fff;
+}
+
+form .send-button {
+    position: absolute;
+    right: 15px;
+    top: 7px;
+    background: transparent;
+    outline: 0;
+    border: 0;
+    color: #1a91ff;
+    font-size: 1.4rem;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .chat-area {
+        height: 100%;
+        margin-top: 10px;
+        display: none;
+    }
+    .chat-body {
+        height: 65dvh;
+    }
+}
+@media only screen and (min-width: 481px){
+    .chat-area {
+        display: block;
+    }
+}

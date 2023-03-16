@@ -17,15 +17,15 @@ function ChatBody({ setState, setNav }) {
     }
 
     return (
-        <div style={{padding: '0px'}}>
+        <div style={{padding: '20px'}}>
             <div className='heading'>
                 <h4>Chats</h4>
                 <div className='search-field d-flex'>
                     <input type="text" style={{ width: width, border: border }} placeholder="Search chats" />
-                    <button onClick={openSearch}>{icon}</button>
+                    <button onClick={openSearch} className='trans-btn'>{icon}</button>
                 </div>
             </div>
-            <div className="chat-friend-list pt-4">
+            <div className="chat-friend-list pt-4" >
                 {!chats === null ? (
                     <FriendCard />
                 ) : (

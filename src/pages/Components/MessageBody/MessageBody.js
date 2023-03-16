@@ -1,11 +1,25 @@
 import React from 'react'
-import { HiPaperAirplane } from 'react-icons/hi'
+import { HiArrowLeft, HiPaperAirplane } from 'react-icons/hi2'
 
 function MessageBody() {
+
+    let width = window.innerWidth;
+
+    function goBackToFriends(){
+        document.getElementById('friends-nav').style.display = 'block';
+        document.getElementById('chat-area').style.display = 'none';
+    }
+
     return (
-        <>
+        <div className='chat-container'>
             <div className="chat-header d-flex">
-                <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
+                {width <= 480 ? 
+                    <div onClick={width <= 480 ? goBackToFriends : ''}>
+                        {width <= 480 ? <span className='text-white me-2'><HiArrowLeft/></span> : '' }
+                    <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
+                    </div> : 
+                    <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
+                }
                 <div className='name-conatiner user-details ms-3'>
                     <h6>John</h6>
                     <small>@johnd134</small>
@@ -29,7 +43,7 @@ function MessageBody() {
                 <input type="text" name="" id="" placeholder='Message...' />
                 <button className='send-button'><HiPaperAirplane /></button>
             </form>
-        </>
+        </div>
     )
 }
 

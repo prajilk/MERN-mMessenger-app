@@ -1,0 +1,86 @@
+.user-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282a37;
+    height: calc(100vh - 40px);
+}
+
+.user-nav .chat-frnd {
+    position: relative;
+    border-radius: 50%;
+    transition: .6s;
+    cursor: pointer;
+}
+
+.user-nav .chat-frnd:hover {
+    background: linear-gradient(360deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2));
+}
+
+.user-nav .chat-frnd:hover>p {
+    color: #3380fc;
+}
+
+.user-nav p {
+    position: absolute;
+    top: 3px;
+    left: 11px;
+    font-size: 1.5rem;
+    color: darkgray;
+}
+
+.user-nav .active {
+    background: linear-gradient(360deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2));
+}
+
+.user-nav .active>p {
+    color: #3380fc;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+.profile-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-nav img {
+    border-radius: 50%;
+    cursor: pointer;
+}
+.user-nav .signout:hover {
+    color: #7b7f94
+}
+.logo-container {
+    margin-top: 15px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .user-nav {
+        flex-direction: row;
+        height: fit-content;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid rgb(93, 90, 90);
+        box-shadow: 0px 4px 4px rgba(93, 90, 90, 0.25);
+    }
+    .nav-container {
+        flex-direction: row;
+    }
+    .profile-container {
+        flex-direction: row;
+        gap: 10px;
+    }
+    .logo-container {
+        display: flex;
+        margin: 0;
+        justify-content: center;
+    }
+    .logo-container img {
+        margin: 0;
+    }
+}

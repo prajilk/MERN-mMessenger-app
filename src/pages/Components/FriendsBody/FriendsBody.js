@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { HiX, HiSearch, HiUserAdd } from 'react-icons/hi';
+import { FaUserPlus } from 'react-icons/fa';
+import { HiX, HiSearch } from 'react-icons/hi';
 import ChatBody from './ChatBody';
+import FriendCard from './FriendCard';
 
-function FriendsBody({ setState, setNav }) {
+function FriendsBody() {
 
     const [friends, setFriends] = useState(null);
 
@@ -16,37 +18,36 @@ function FriendsBody({ setState, setNav }) {
         setIcon(icon.type === HiSearch ? <HiX /> : <HiSearch />);
     }
 
-    function showFindFriend(){
+    function showFindFriend() {
         document.getElementById('find-friend-div').style.transform = 'translateX(0)';
     }
 
     return (
-        <div style={{padding: '20px'}}>
+        <div style={{ padding: '20px' }}>
             <div className='heading'>
                 <h4>Friends</h4>
                 <div className='search-field d-flex'>
                     <input type="text" className='searchInput' style={{ width: width, border: border }} placeholder="Search friends" />
-                    <button onClick={openSearch} className='friendSearch'>{icon}</button>
+                    <button onClick={openSearch} className='friendSearch trans-btn'>{icon}</button>
                 </div>
-                <button 
-                    className='findFriend' 
-                    onClick={()=>showFindFriend()}>
-                        <HiUserAdd/>
-                        <span className='notification-badge'></span>
+                <button
+                    className='findFriend'
+                    onClick={() => showFindFriend()}>
+                    <FaUserPlus />
+                    <span className='notification-badge'></span>
                 </button>
             </div>
             <div className="chat-friend-list pt-4">
                 {!friends === null ? (
-                    // <FriendCard />
-                    <>Hi</>
+                    <FriendCard />
                 ) : (
                     <div className='no-chats'>
                         <h5>No friends available !</h5>
                         <p>Add new friends now.</p>
-                        <button onClick={()=>{
-                            setState(true)
-                            setNav('chat')
+                        <button onClick={() => {
+                            showFindFriend()
                         }}>Add now</button>
+                        
                     </div>
                 )}
             </div>

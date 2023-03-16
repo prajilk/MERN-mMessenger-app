@@ -2,11 +2,18 @@ import axios from '../api/axios'
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './homePage.css'
-import { HiChatAlt2, HiUsers } from 'react-icons/hi';
-import MessageBody from './Components/MessageBody';
-import ChatBody from './Components/ChatBody';
-import FriendsBody from './Components/FriendsBody';
-import FindFriend from './Components/FindFriend';
+import './Components/FriendsBody/friendsNav.css'
+import './Components/MessageBody/messageNav.css'
+import './userNav.css'
+import './Components/UserProfile/userProfile.css'
+import { FaComments, FaPowerOff, FaUsers } from 'react-icons/fa';
+import MessageBody from './Components/MessageBody/MessageBody';
+import ChatBody from './Components/FriendsBody/ChatBody';
+import FriendsBody from './Components/FriendsBody/FriendsBody';
+import FindFriend from './Components/FriendsBody/FindFriend';
+import UserProfile from './Components/UserProfile/UserProfile';
+import { AppContext } from '../context/AppContext';
+import Modal from './Components/Modal/Modal';
 
 function ChatsPage() {
 
@@ -14,10 +21,9 @@ function ChatsPage() {
 
     const [activeMessage, setActiveMessage] = useState(null);
     const [user, setUser] = useState({});
-
     const [navActive, setNavActive] = useState('chat');
-
     const [chatBody, setChatBody] = useState(true);
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         try {
@@ -28,54 +34,75 @@ function ChatsPage() {
                     } else {
                         setUser(res.data.user);
                     }
+                }).catch(({ code, message }) => {
+                    navigate('/error',{ state:{code, message}, replace: true})
                 })
         } catch { }
-    }, [])
+    }, [navigate])
 
-    useEffect(()=>{
-        const friendActive = document.getElementById('friend-active');
-        const chatActive = document.getElementById('chat-active');
+    useEffect(() => {
+        if (Object.keys(user).length !== 0) {
+            const friendActive = document.getElementById('friend-active');
+            const chatActive = document.getElementById('chat-active');
 
-        friendActive.addEventListener('click', ()=>{
-            setNavActive('friend');
-            setChatBody(false);
-        })
+            friendActive.addEventListener('click', () => {
+                setNavActive('friend');
+                setChatBody(false);
+            })
 
-        chatActive.addEventListener('click', ()=>{
-            setNavActive('chat');
-            setChatBody(true);
-        })
+            chatActive.addEventListener('click', () => {
+                setNavActive('chat');
+                setChatBody(true);
+            })
 
-    },[])
+        }
+    }, [user])
+
+    function showUserProfile() {
+        document.getElementById('user-profile-div').style.transform = 'translateX(0)';
+    }
+
+    const signOut = () => {
+        setModal(true);
+    }
 
     return (
         <div className="home-page">
-            <div class="row justify-content-center w-100" style={{ height: '100%' }}>
+            {Object.keys(user).length !== 0 ? <div class="row justify-content-center w-100" style={{ height: '100%' }}>
                 <div class="user-nav col-md-1">
-                    <div className="logo-container mt-3">
-                        <img src={process.env.PUBLIC_URL + "/logo.png"} alt="..." style={{ width: '45px' }} />
+                    <div className="logo-container">
+                        <img className='m-0' src={process.env.PUBLIC_URL + "/logo.png"} alt="..." style={{ width: '45px' }} />
                     </div>
                     <div className='nav-container'>
                         <div className={`chat-frnd p-4 ${navActive === 'chat' ? 'active' : ''}`} id='chat-active'>
-                            <p><HiChatAlt2 /></p>
+                            <p><FaComments /></p>
                         </div>
                         <div className={`chat-frnd p-4 ${navActive === 'friend' ? 'active' : ''}`} id='friend-active'>
                             <p>
-                                <HiUsers />
+                                <FaUsers />
                                 <span className='notification-badge'></span>
                             </p>
                         </div>
                     </div>
-                    <img
-                        src={`https://ui-avatars.com/api/?name=${user.fullname}&background=0D8ABC&color=fff`}
-                        alt=".."
-                        width={'40px'} />
+                    <div className='profile-container'>
+                        <img
+                            onClick={showUserProfile}
+                            src={`https://ui-avatars.com/api/?name=${user.fullname}&background=0D8ABC&color=fff`}
+                            alt=".."
+                            width={'40px'} />
+                        <button className='trans-btn signout' onClick={signOut}><FaPowerOff /></button>
+                    </div>
                 </div>
-                <div class="friends-nav col-md-4 p-0">
-                    <FindFriend/>
-                    {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody setState={setChatBody} setNav={setNavActive} />}
+                <div class="friends-nav col-md-4 p-0" id='friends-nav'>
+                    <FindFriend />
+
+                    <AppContext.Provider value={{ user, setUser }}>
+                        <UserProfile />
+                    </AppContext.Provider>
+
+                    {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody />}
                 </div>
-                <div class="chat-area col-md-7">
+                <div class="chat-area col-md-7" id='chat-area'>
                     {!activeMessage === null ? (
                         <MessageBody />
                     ) : (
@@ -85,7 +112,13 @@ function ChatsPage() {
                         </div>
                     )}
                 </div>
-            </div>
+            </div> :
+            <div className='d-flex justify-content-center align-items-center h-100'>
+                <div class="spinner-border text-light" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>}
+            {modal && <Modal closeModal={setModal}/>}
         </div>
     )
 }
