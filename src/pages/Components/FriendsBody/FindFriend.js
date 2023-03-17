@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { HiX } from 'react-icons/hi';
 import { FaUserPlus } from 'react-icons/fa';
 import axios from '../../../api/axios'
 import { getAvatar } from '../../../api/avatarUrl';
+import { SocketContext } from '../../../context/SocketContext';
+import { AppContext } from '../../../context/AppContext';
 
 function FindFriend() {
 
     const [searchResults, setSearchResults] = useState([]);
     const [isResult, setIsResult] = useState(false);
     const [isResultLoaded, setIsResultLoaded] = useState(true);
+
+    const socket = useContext(SocketContext);
+    const { user } = useContext(AppContext);
 
     function hideFindFriend() {
         document.getElementById('find-friend-div').style.transform = 'translateX(100%)';
@@ -51,6 +56,10 @@ function FindFriend() {
         )
     }
 
+    const sendRequest = (recipientId) => {
+        socket.emit('sent-request', user, recipientId);
+    }
+
     return (
         <div className='find-friend-div' id='find-friend-div'>
             <div className='find-friend-heading'>
@@ -77,7 +86,7 @@ function FindFriend() {
                                         <small>@{data.username}</small>
                                     </div>
                                     <div className='add-req'>
-                                        <button><FaUserPlus className='FaUserPlus'/></button>
+                                        <button onClick={()=> sendRequest(data._id) }><FaUserPlus className='FaUserPlus'/></button>
                                     </div>
                                 </div>
                                 <hr className='m-0' />

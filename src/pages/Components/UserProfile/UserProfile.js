@@ -5,7 +5,7 @@ import { getAvatar } from '../../../api/avatarUrl';
 
 function UserProfile() {
 
-    const { user, setUser } = useContext(AppContext);
+    const { user } = useContext(AppContext);
 
     function hideUserProfile() {
         document.getElementById('user-profile-div').style.transform = 'translateX(-100%)';

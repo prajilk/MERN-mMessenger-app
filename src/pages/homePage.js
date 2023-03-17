@@ -95,13 +95,13 @@ function ChatsPage() {
                     </div>
                 </div>
                 <div class="friends-nav col-md-4 p-0" id='friends-nav'>
-                    <FindFriend />
+                    <AppContext.Provider value={{ user }}>
 
-                    <AppContext.Provider value={{ user, setUser }}>
+                        <FindFriend />
                         <UserProfile />
+                        {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody />}
+                        
                     </AppContext.Provider>
-
-                    {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody />}
                 </div>
                 <div class="chat-area col-md-7" id='chat-area'>
                     {!activeMessage === null ? (
