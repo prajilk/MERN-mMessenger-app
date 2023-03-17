@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { HiX } from 'react-icons/hi';
-import { FaUserPlus } from 'react-icons/fa';
+import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import axios from '../../../api/axios'
 import { getAvatar } from '../../../api/avatarUrl';
 import { SocketContext } from '../../../context/SocketContext';
@@ -70,11 +70,11 @@ function FindFriend() {
                 <input type="text" name='find-friend' onChangeCapture={searchData} placeholder='Enter name' />
             </div>
             <div className="find-friends-body">
-                { !isResultLoaded && <div className='find-friends-body-title'>
+                {!isResultLoaded && <div className='find-friends-body-title'>
                     <h6>Search result</h6>
-                    <Placeholder/>
-                </div> }
-                { searchResults.length !== 0 ? <div className='find-friends-body-title'>
+                    <Placeholder />
+                </div>}
+                {searchResults.length !== 0 ? <div className='find-friends-body-title'>
                     <h6>Search results</h6>
                     <div className="card">
                         {searchResults.map((data, index) => {
@@ -85,9 +85,17 @@ function FindFriend() {
                                         <h6>{data.fullname}</h6>
                                         <small>@{data.username}</small>
                                     </div>
-                                    <div className='add-req'>
-                                        <button onClick={()=> sendRequest(data._id) }><FaUserPlus className='FaUserPlus'/></button>
-                                    </div>
+                                    {data.status === null && <div className='add-req'>
+                                        <button onClick={()=> sendRequest(data._id) } className='send-req'><FaUserPlus className='FaUserPlus'/></button>
+                                    </div>}
+                                    {data.status === 'pending' && <div className='position-relative'><FaUserCheck className='FaUserCheck' /></div> }
+                                    {data.status === 'requests' && <div>
+                                        <button className='cancel-req'><HiX /></button>
+                                        <button className='frnd-card-lg-btn'>+ Accept</button>
+                                    </div>}
+                                    {data.status === 'friends' && <div>
+                                        <button className='frnd-card-lg-btn'>Message</button>
+                                    </div>}
                                 </div>
                                 <hr className='m-0' />
                             </div>)
@@ -113,7 +121,7 @@ function FindFriend() {
                             </div>
                             <div>
                                 <button className='cancel-req'><HiX /></button>
-                                <button className='accept-req'>+ Accept</button>
+                                <button className='frnd-card-lg-btn'>+ Accept</button>
                             </div>
                         </div>
                         <hr className='m-0' />

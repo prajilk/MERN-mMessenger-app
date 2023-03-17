@@ -175,7 +175,7 @@
     font-size: 1.3rem;
 }
 
-.friends-card .accept-req {
+.friends-card .frnd-card-lg-btn {
     outline: 0;
     border: 0;
     padding: 5px 10px;
@@ -191,7 +191,7 @@
     width: 40px;
 }
 
-.friends-card .add-req button {
+.friends-card .add-req .send-req {
     margin: 0;
     outline: 0;
     border: 0;
@@ -204,15 +204,22 @@
     color: #fff;
     font-size: 1.1rem;
 }
-.friends-card .add-req button .FaUserPlus {
+.friends-card .add-req .send-req .FaUserPlus {
     position: absolute;
     font-size: 1.1rem;
     top: 11px;
     right: .6rem;
 }
+.friends-card .FaUserCheck {
+    color: #01acfc;
+    font-size: 1.3rem;
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+}
 
-.friends-card .accept-req:hover,
-.add-req button:hover {
+.friends-card .frnd-card-lg-btn:hover,
+.add-req .send-req:hover {
     background-color: #1a91ff;
 }
 
