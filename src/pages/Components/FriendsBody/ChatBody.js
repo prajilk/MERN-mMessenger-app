@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import FriendCard from './FriendCard'
+import ChatFriendCard from './ChatFriendCard';
 import { HiX, HiSearch } from 'react-icons/hi';
 
 function ChatBody({ setState, setNav }) {
@@ -27,7 +27,7 @@ function ChatBody({ setState, setNav }) {
             </div>
             <div className="chat-friend-list pt-4" >
                 {!chats === null ? (
-                    <FriendCard />
+                    <ChatFriendCard />
                 ) : (
                     <div className='no-chats'>
                         <h5>No chats available !</h5>

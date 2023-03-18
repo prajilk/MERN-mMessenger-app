@@ -1,5 +1,5 @@
 import axios from '../api/axios'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './homePage.css'
 import './Components/FriendsBody/friendsNav.css'
@@ -15,6 +15,7 @@ import UserProfile from './Components/UserProfile/UserProfile';
 import { AppContext } from '../context/AppContext';
 import Modal from './Components/Modal/Modal';
 import { getAvatar } from '../api/avatarUrl';
+import { SocketContext } from '../context/SocketContext';
 
 function ChatsPage() {
 
@@ -25,6 +26,9 @@ function ChatsPage() {
     const [navActive, setNavActive] = useState('chat');
     const [chatBody, setChatBody] = useState(true);
     const [modal, setModal] = useState(false);
+    const [reqNotification, setReqNotification] = useState(false);
+
+    const socket = useContext(SocketContext);
 
     useEffect(() => {
         try {
@@ -34,6 +38,7 @@ function ChatsPage() {
                         navigate('/signin')
                     } else {
                         setUser(res.data.user);
+                        socket.emit('joinRoom', res.data.user._id);
                     }
                 }).catch(({ code, message }) => {
                     navigate('/error',{ state:{code, message}, replace: true})
@@ -81,7 +86,7 @@ function ChatsPage() {
                         <div className={`chat-frnd p-4 ${navActive === 'friend' ? 'active' : ''}`} id='friend-active'>
                             <p>
                                 <FaUsers />
-                                <span className='notification-badge'></span>
+                                {reqNotification && <span className='notification-badge'></span>}
                             </p>
                         </div>
                     </div>
@@ -95,7 +100,7 @@ function ChatsPage() {
                     </div>
                 </div>
                 <div class="friends-nav col-md-4 p-0" id='friends-nav'>
-                    <AppContext.Provider value={{ user }}>
+                    <AppContext.Provider value={{ user, reqNotification, setReqNotification }}>
 
                         <FindFriend />
                         <UserProfile />

@@ -175,7 +175,7 @@
     font-size: 1.3rem;
 }
 
-.friends-card .frnd-card-lg-btn {
+.frnd-card-lg-btn {
     outline: 0;
     border: 0;
     padding: 5px 10px;
@@ -218,7 +218,7 @@
     top: .5rem;
 }
 
-.friends-card .frnd-card-lg-btn:hover,
+.frnd-card-lg-btn:hover,
 .add-req .send-req:hover {
     background-color: #1a91ff;
 }
@@ -259,7 +259,7 @@
 }
 
 .frnd-card:hover {
-    background-color: #01acfc;
+    background-color: #1a1b23;
 }
 
 .frnd-card.active {
@@ -275,8 +275,10 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    flex-grow: 1;
     flex-direction: column;
 }
+
 
 .name-conatiner h6,
 small {

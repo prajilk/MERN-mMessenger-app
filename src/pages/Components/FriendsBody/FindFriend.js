@@ -1,19 +1,24 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { HiX } from 'react-icons/hi';
 import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import axios from '../../../api/axios'
 import { getAvatar } from '../../../api/avatarUrl';
 import { SocketContext } from '../../../context/SocketContext';
 import { AppContext } from '../../../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 function FindFriend() {
 
     const [searchResults, setSearchResults] = useState([]);
+    const [friendRequests, setFriendRequests] = useState([]);
     const [isResult, setIsResult] = useState(false);
     const [isResultLoaded, setIsResultLoaded] = useState(true);
+    const [acceptReq, setAcceptReq] = useState(true);
 
     const socket = useContext(SocketContext);
-    const { user } = useContext(AppContext);
+    const { user, setReqNotification } = useContext(AppContext);
+
+    const navigate = useNavigate();
 
     function hideFindFriend() {
         document.getElementById('find-friend-div').style.transform = 'translateX(100%)';
@@ -56,8 +61,69 @@ function FindFriend() {
         )
     }
 
-    const sendRequest = (recipientId) => {
+    useEffect(() => {
+        axios.get('/get-friends-requests')
+        .then((res) => {
+            setFriendRequests(res.data.frndReqs);
+            if (res.data.frndReqs.length !== 0) setReqNotification(true);
+        }).catch(({ code, message }) => {
+            navigate('/error', { state: { code, message }, replace: true })
+        })
+
+        socket.on('friend-request-notification', (frndRequests)=>{
+            setFriendRequests(frndRequests);
+            setReqNotification(true);
+        })
+    }, [])
+
+    const sendRequest = (recipientId, index) => {
         socket.emit('sent-request', user, recipientId);
+        setSearchResults(prevResults => {
+            const updatedResults = [...prevResults];
+            updatedResults[index].status = "requests";
+            return updatedResults;
+        });
+    }
+
+    const acceptRequest = (recipientId, index) => {
+        socket.emit('accept-request', user, recipientId);
+        setSearchResults(prevResults => {
+            const updatedResults = [...prevResults];
+            updatedResults[index].status = "friends";
+            return updatedResults;
+        });
+    }
+
+    const rejectRequest = (recipientId, index) => {
+        socket.emit('reject-request', user, recipientId);
+        setSearchResults(prevResults => {
+            const updatedResults = [...prevResults];
+            updatedResults[index].status = null;
+            return updatedResults;
+        });
+    }
+
+    const acceptRequestFromReq = (recipientId, index) => {
+        socket.emit('accept-request', user, recipientId);
+        setAcceptReq(false);
+        setReqNotification(false);
+        setTimeout(()=>{
+            setFriendRequests(prevResults => {
+                const updatedResults = [...prevResults];
+                updatedResults.splice(index, 1);
+                return updatedResults;
+            })
+        },3000);
+    }
+
+    const rejectRequestFromReq = (recipientId, index) => {
+        socket.emit('reject-request', user, recipientId);
+        setFriendRequests(prevResults => {
+            const updatedResults = [...prevResults];
+            updatedResults.splice(index, 1);
+            return updatedResults;
+        });
+        setReqNotification(false);
     }
 
     return (
@@ -85,14 +151,18 @@ function FindFriend() {
                                         <h6>{data.fullname}</h6>
                                         <small>@{data.username}</small>
                                     </div>
+
                                     {data.status === null && <div className='add-req'>
-                                        <button onClick={()=> sendRequest(data._id) } className='send-req'><FaUserPlus className='FaUserPlus'/></button>
+                                        <button onClick={() => sendRequest(data._id, index)} className='send-req'><FaUserPlus className='FaUserPlus' /></button>
                                     </div>}
-                                    {data.status === 'pending' && <div className='position-relative'><FaUserCheck className='FaUserCheck' /></div> }
-                                    {data.status === 'requests' && <div>
-                                        <button className='cancel-req'><HiX /></button>
-                                        <button className='frnd-card-lg-btn'>+ Accept</button>
+
+                                    {data.status === 'requests' && <div className='position-relative'><FaUserCheck className='FaUserCheck' /></div>}
+
+                                    {data.status === 'pending' && <div>
+                                        <button className='cancel-req' onClick={() => rejectRequest(data._id, index)}><HiX /></button>
+                                        <button className='frnd-card-lg-btn' onClick={() => acceptRequest(data._id, index)}>+ Accept</button>
                                     </div>}
+
                                     {data.status === 'friends' && <div>
                                         <button className='frnd-card-lg-btn'>Message</button>
                                     </div>}
@@ -110,23 +180,29 @@ function FindFriend() {
                         </div>
                     </div>)
                 }
-                <div className='find-friends-body-title'>
+                {friendRequests.length !== 0 && <div className='find-friends-body-title'>
                     <h6>Friend requests</h6>
                     <div className="card">
-                        <div className='friends-card'>
-                            <img src={`https://ui-avatars.com/api/?name=Prajil+K&background=0D8ABC&color=fff`} alt="" width={'40px'} />
-                            <div className='name-conatiner ms-3'>
-                                <h6>Prajil</h6>
-                                <small>@prajil2001</small>
-                            </div>
-                            <div>
-                                <button className='cancel-req'><HiX /></button>
-                                <button className='frnd-card-lg-btn'>+ Accept</button>
-                            </div>
-                        </div>
-                        <hr className='m-0' />
+                        {friendRequests.map((data, index) => {
+                            return (<div key={index}>
+                                <div className='friends-card'>
+                                    <img src={getAvatar(data.fullname, data.color)} alt="" width={'40px'} />
+                                    <div className='name-conatiner ms-3'>
+                                        <h6>{data.fullname}</h6>
+                                        <small>@{data.username}</small>
+                                    </div>
+                                    {acceptReq ? <div>
+                                        <button className='cancel-req' onClick={()=> rejectRequestFromReq(data._id, index)}><HiX /></button>
+                                        <button className='frnd-card-lg-btn' onClick={()=> acceptRequestFromReq(data._id, index)}>+ Accept</button>
+                                    </div> : <div>
+                                        <button className='frnd-card-lg-btn'>Message</button>
+                                    </div>}
+                                </div>
+                                <hr className='m-0' />
+                            </div>)
+                        })}
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
     )
