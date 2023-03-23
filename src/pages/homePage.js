@@ -33,7 +33,7 @@ function ChatsPage() {
 
     useEffect(() => {
         try {
-            axios.get('/session').then((res) => {
+            axios.get('/session', {withCredentials: true}).then((res) => {
                     console.log(res.data.user);
                     console.log(res);
                     if (res.data.user === undefined) {
