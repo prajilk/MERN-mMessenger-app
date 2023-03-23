@@ -74,7 +74,7 @@ function FindFriend({ setState, setNav }) {
             setFriendRequests(frndRequests);
             setReqNotification(true);
         })
-    }, [])
+    }, [navigate, setReqNotification, socket])
 
     const sendRequest = (recipientId, index) => {
         socket.emit('sent-request', user, recipientId);

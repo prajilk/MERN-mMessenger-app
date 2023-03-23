@@ -3,5 +3,5 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 export default axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: process.env.REACT_APP_SERVER_URL
 })

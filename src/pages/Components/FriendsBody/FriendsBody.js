@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { FaUserPlus } from 'react-icons/fa';
 import { HiX, HiSearch } from 'react-icons/hi';
-import ChatBody from './ChatBody';
 import FriendCard from './FriendCard';
 import { AppContext } from '../../../context/AppContext';
 import { SocketContext } from '../../../context/SocketContext';
@@ -32,7 +31,7 @@ function FriendsBody({ setState, setNav }) {
         } catch (error) {
             
         }
-    }, [])
+    }, [socket])
 
     function openSearch() {
         setWidth(width === '0' ? 'calc(100% - 30px)' : '0');
