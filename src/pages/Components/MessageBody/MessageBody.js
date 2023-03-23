@@ -1,48 +1,141 @@
-import React from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { HiArrowLeft, HiPaperAirplane } from 'react-icons/hi2'
+import { getAvatar } from '../../../api/avatarUrl';
+import { AppContext } from '../../../context/AppContext';
+import { SocketContext } from '../../../context/SocketContext';
 
 function MessageBody() {
 
+    const { activeMessage, setActiveMessage, chats, setChats, user } = useContext(AppContext);
+    const socket = useContext(SocketContext);
+
+    const [currentMessages, setCurrentMessages] = useState([]);
+    const [isOnline, setIsOnline] = useState(false);
+    const [onlineStatus, setOnlineStatus] = useState('online');
+
+    let currentChat = chats.filter((chat) => {
+        return chat.receiver_details._id === activeMessage;
+    })
+    currentChat = currentChat[0];
+
+    useEffect(() => {
+        if(chats.length !== 0)
+            setCurrentMessages(currentChat.chats);
+    }, [currentChat, chats.length])
+
     let width = window.innerWidth;
 
-    function goBackToFriends(){
+    function goBackToFriends() {
         document.getElementById('friends-nav').style.display = 'block';
         document.getElementById('chat-area').style.display = 'none';
     }
 
+    const inputRef = useRef();
+    socket.on('recieve-message', ({sender, message, timestamp})=>{
+        
+        const newObject = {sender: sender, message: message, timestamp: timestamp}
+
+        const newData = chats.map((chat) => {
+            if (chat.receiver_details._id === sender) {
+                return {
+                    ...chat,
+                    chats: [newObject, ...chat.chats],
+                };
+            } else {
+                return chat;
+            }
+        });
+        setChats(newData);
+    })
+
+    const sendMsg = (e) => {
+        e.preventDefault();
+        const msg = inputRef.current.value;
+        // Send message to server
+        socket.emit('send-message', {message: msg, timestamp: new Date()}, user._id, activeMessage);
+
+        const newObject = {sender: '', message: msg, timestamp: new Date()}
+
+        const newData = chats.map((chat) => {
+            if (chat.receiver_details._id === activeMessage) {
+                return {
+                    ...chat,
+                    chats: [newObject, ...chat.chats],
+                };
+            } else {
+                return chat;
+            }
+        });
+        setChats(newData);
+
+        inputRef.current.value = '';
+    }
+
+    const GetTime = ({dateObj}) =>{
+        dateObj = new Date(dateObj);
+        const time = dateObj.toLocaleTimeString('en-IN',{hour12:true, hour: "numeric", minute: "numeric"})
+        return (<span>{time}</span>)
+    }
+
+    useEffect(()=>{
+        socket.emit('check-online', activeMessage, (response)=>{
+            setIsOnline(response);
+        })
+    },[currentChat, activeMessage, socket])
+
+    const showMessage = () =>{
+        document.getElementById('chat-area').style.display = 'none';
+        document.getElementById('friends-nav').style.display = 'block';
+        setActiveMessage(null);
+    }
+
+    const sendTyping = () => {
+        socket.emit('sendTyping', user, activeMessage);
+    }
+
+    useEffect(()=>{
+        socket.on('sendTyping', (receiver)=>{
+            if(receiver === activeMessage){
+                setOnlineStatus('typing...');
+                setTimeout(() => {
+                    setOnlineStatus('online');
+                }, 3000);
+            }
+        });
+    },[onlineStatus, activeMessage, socket])
+
     return (
         <div className='chat-container'>
             <div className="chat-header d-flex">
-                {width <= 480 ? 
+                {width <= 767 ?
                     <div onClick={width <= 480 ? goBackToFriends : ''}>
-                        {width <= 480 ? <span className='text-white me-2'><HiArrowLeft/></span> : '' }
-                        {/* getAvatar(data.fullname, data.color) */}
-                    <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
-                    </div> : 
-                    <img src="https://ui-avatars.com/api/?name=John&background=ff1493&color=fff" alt="..." width={'50px'} />
+                        {width <= 767 ? <span className='text-white me-2' onClick={showMessage}><HiArrowLeft /></span> : ''}
+                        {chats.length !== 0 && <img src={getAvatar(currentChat.receiver_details.fullname, currentChat.receiver_details.color)} alt="..." width={'50px'} />}
+                    </div> :
+                    <>{chats.length !== 0 && <img src={getAvatar(currentChat.receiver_details.fullname, currentChat.receiver_details.color)} alt="..." width={'50px'} />}</>
+                    
                 }
+                <div className={isOnline ? 'online':'offline'}></div>
                 <div className='name-conatiner user-details ms-3'>
-                    <h6>John</h6>
-                    <small>@johnd134</small>
+                    {chats.length !== 0 && <h6>{currentChat.receiver_details.fullname}</h6>}
+                    <small className={isOnline && 'online-status'}>{isOnline ? onlineStatus : 'offline'}</small>
                 </div>
             </div>
             <div className='body-container'>
                 <div className="chat-body mt-4">
-                    <div class="chat-message">Hello</div>
-                    <div class="chat-message">How are you?</div>
-                    <div class="chat-message">I'm good, thank you. How about you skhjbsjhjjjj skk s i ks  k si s si si sisi jsi sknkis s is i si si si sis  sis i s si siks is is si siiks?</div>
-                    <div class="chat-message">I'm doing well, thanks for asking.</div>
-                    <div class="chat-message">That's great to hear!</div>
-                    <div class="chat-message">Yeah, I'm really happy about it.</div>
-                    <div class="chat-message">Anyway, what are your plans for the weekend?</div>
-                    <div class="chat-message">Not sure yet, maybe just relaxing at home. What about you?</div>
-                    <div class="chat-message">I'm planning to go hiking with some friends.</div>
-                    <div class="chat-message">That sounds like fun!</div>
+                    {currentMessages.map((chat, index) => {
+                        return <div 
+                                    className={chat.sender === activeMessage ? "chat-message" : "chat-message-sender"} 
+                                    key={index}>
+                                        {chat.message}
+                                        <GetTime dateObj={chat.timestamp}/>
+                                </div>
+                    })}
                 </div>
             </div>
-            <form>
-                <input type="text" name="" id="" placeholder='Message...' />
-                <button className='send-button'><HiPaperAirplane /></button>
+            <form onSubmit={sendMsg}>
+                <input type="text" name="message" ref={inputRef} onChange={sendTyping} placeholder='Message...' />
+                <button className='send-button' type='button' onClick={sendMsg}><HiPaperAirplane /></button>
             </form>
         </div>
     )

@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { getAvatar } from '../../../api/avatarUrl'
+import { AppContext } from '../../../context/AppContext'
+import { SocketContext } from '../../../context/SocketContext';
 
-function FriendCard({ friends }) {
+function FriendCard({ friends, setState, setNav }) {
+
+    const socket = useContext(SocketContext);
+    const { user, setActiveMessage } = useContext(AppContext);
+
+    function hideFindFriend() {
+        document.getElementById('find-friend-div').style.transform = 'translateX(100%)';
+    }
+
+    const readyToSendMessage = (recipientId) => {
+        socket.emit('ready-to-send-message', user, recipientId);
+        setActiveMessage(recipientId)
+        hideFindFriend();
+        setNav('chat');
+        setState(true)
+    }
+
     return (
         <>
-            {friends.map((friend) => {
+            {friends.length !== 0 ? friends.map((friend) => {
                 return (
                     <div className="frnd-card d-flex p-3 mb-2">
                         <img src={getAvatar(friend.fullname, friend.color)} alt=".." width={'50px'} />
@@ -13,11 +31,11 @@ function FriendCard({ friends }) {
                             <small>@{friend.username}</small>
                         </div>
                         <div>
-                            <button className='frnd-card-lg-btn'>Message</button>
+                            <button className='frnd-card-lg-btn' onClick={()=>readyToSendMessage(friend._id)}>Message</button>
                         </div>
                     </div>
                 )
-            })}
+            }) : <p>No result found!</p>}
         </>
     )
 }

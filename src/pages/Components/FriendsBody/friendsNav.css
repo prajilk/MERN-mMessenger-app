@@ -256,6 +256,7 @@
 .frnd-card {
     background-color: #3e404d;
     border-radius: 15px;
+    position: relative;
 }
 
 .frnd-card:hover {
@@ -263,7 +264,7 @@
 }
 
 .frnd-card.active {
-    background-color: #01acfc;
+    background-color: #1a1b23;
 }
 
 .frnd-card img {
@@ -286,9 +287,14 @@ small {
     padding: 0;
     font-size: 1rem;
 }
+.name-conatiner .time {
+    font-size: .8rem;
+    color: #a9a8a8;
+}
 
 .name-conatiner small {
     font-size: .8rem;
+    color: #a9a8a8;
 }
 
 /* //////////\\\\\\\\\\\ */
@@ -334,6 +340,21 @@ small {
     animation: skeleton-loading 1s linear infinite alternate;
 }
 
+.new-message-alert {
+    width: 40px;
+    height: 20px;
+    background-color: #3380fc;
+    border-radius: 20px;
+    position: relative;
+    display: none;
+}
+.new-message-alert small {
+    color: #fff;
+    position: absolute;
+    left: .43rem;
+    font-weight: bolder;
+}
+
 @keyframes skeleton-loading {
     0% {
         background-color: hsl(180, 2%, 24%);
@@ -344,7 +365,7 @@ small {
     }
 }
 
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (min-width: 320px) and (max-width: 767px) {
     .search-field input {
         margin-top: -5px;
     }

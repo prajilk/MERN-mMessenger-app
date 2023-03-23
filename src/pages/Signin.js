@@ -53,10 +53,10 @@ export default function Signin() {
                             <small>Email or password is incorrect! try again.</small>
                         </p> : ''
                     }
-                    <div class="input-wrapper mb-3">
+                    <div className="input-wrapper mb-3">
                         <input 
                             type="email" 
-                            class="form-control" 
+                            className="form-control" 
                             name="email" 
                             id="email" 
                             placeholder="Email"
@@ -65,10 +65,10 @@ export default function Signin() {
                         <i className="input-icons"><HiMail /></i>
 
                     </div>
-                    <div class="input-wrapper mb-3">
+                    <div className="input-wrapper mb-3">
                         <input 
                             type="password" 
-                            class="form-control" 
+                            className="form-control" 
                             name="password" 
                             id="password" 
                             placeholder="Password"
@@ -77,7 +77,7 @@ export default function Signin() {
                         <i className="input-icons"><HiKey /></i>
                         <i className="pass-visibility" onClick={changePassVisibility}>{passVisibility}</i>
                     </div>
-                    <button class="btn" type="submit">Sign in</button>
+                    <button className="btn" type="submit">Sign in</button>
                 </form>
             </div>
             <div className="outside-card">

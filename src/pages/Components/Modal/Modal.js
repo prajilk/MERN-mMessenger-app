@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
+import { SocketContext } from '../../../context/SocketContext';
 import './Modal.css'
 
-function Modal({ closeModal }) {
+function Modal({ closeModal, user }) {
 
+    const socket = useContext(SocketContext);
     const navigate = useNavigate();
 
     const signOutUser = () => {
         axios.get('/signout')
             .then(()=>{
+                socket.emit('signout', user._id);
                 navigate('/signin');
             }).catch((err)=>{
                 console.log(err);

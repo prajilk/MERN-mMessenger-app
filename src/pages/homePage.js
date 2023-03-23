@@ -21,6 +21,7 @@ function ChatsPage() {
 
     const navigate = useNavigate();
 
+    const [chats, setChats] = useState([]);
     const [activeMessage, setActiveMessage] = useState(null);
     const [user, setUser] = useState({});
     const [navActive, setNavActive] = useState('chat');
@@ -41,10 +42,10 @@ function ChatsPage() {
                         socket.emit('joinRoom', res.data.user._id);
                     }
                 }).catch(({ code, message }) => {
-                    navigate('/error',{ state:{code, message}, replace: true})
+                    navigate('/error', { state: { code, message }, replace: true })
                 })
         } catch { }
-    }, [navigate])
+    }, [navigate, socket])
 
     useEffect(() => {
         if (Object.keys(user).length !== 0) {
@@ -74,8 +75,8 @@ function ChatsPage() {
 
     return (
         <div className="home-page">
-            {Object.keys(user).length !== 0 ? <div class="row justify-content-center w-100" style={{ height: '100%' }}>
-                <div class="user-nav col-md-1">
+            {Object.keys(user).length !== 0 ? <div className="row justify-content-center w-100" style={{ height: '100%' }}>
+                <div className="user-nav col-md-1">
                     <div className="logo-container">
                         <img className='m-0' src={process.env.PUBLIC_URL + "/logo.png"} alt="..." style={{ width: '45px' }} />
                     </div>
@@ -99,32 +100,34 @@ function ChatsPage() {
                         <button className='trans-btn signout' onClick={signOut}><FaPowerOff /></button>
                     </div>
                 </div>
-                <div class="friends-nav col-md-4 p-0" id='friends-nav'>
-                    <AppContext.Provider value={{ user, reqNotification, setReqNotification }}>
+                <div className="friends-nav col-md-4 p-0" id='friends-nav'>
+                    <AppContext.Provider value={{ user, reqNotification, setReqNotification, chats, setChats, activeMessage, setActiveMessage }}>
 
-                        <FindFriend />
+                        <FindFriend setState={setChatBody} setNav={setNavActive} />
                         <UserProfile />
-                        {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody />}
-                        
+                        {chatBody ? <ChatBody setState={setChatBody} setNav={setNavActive} /> : <FriendsBody setState={setChatBody} setNav={setNavActive} />}
+
                     </AppContext.Provider>
                 </div>
-                <div class="chat-area col-md-7" id='chat-area'>
-                    {!activeMessage === null ? (
-                        <MessageBody />
-                    ) : (
+                <div className="chat-area col-md-7" id='chat-area'>
+                    {activeMessage === null ? (
                         <div className='no-message-active'>
                             <img src={process.env.PUBLIC_URL + '/logo_w.png'} alt="..." width={'200px'} />
                             <p>Start sending messages to friends.</p>
                         </div>
+                    ) : (
+                        <AppContext.Provider value={{activeMessage, setActiveMessage, chats, setChats, user}}>
+                            <MessageBody />
+                        </AppContext.Provider>
                     )}
                 </div>
             </div> :
-            <div className='d-flex justify-content-center align-items-center h-100'>
-                <div class="spinner-border text-light" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>}
-            {modal && <Modal closeModal={setModal}/>}
+                <div className='d-flex justify-content-center align-items-center h-100'>
+                    <div className="spinner-border text-light" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>}
+            {modal && <Modal closeModal={setModal} user={user} />}
         </div>
     )
 }

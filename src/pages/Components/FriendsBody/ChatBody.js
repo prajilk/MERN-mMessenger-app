@@ -1,14 +1,20 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ChatFriendCard from './ChatFriendCard';
 import { HiX, HiSearch } from 'react-icons/hi';
+import axios from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../../context/AppContext';
 
 function ChatBody({ setState, setNav }) {
 
-    const [chats, setChats] = useState(null);
+    const navigate = useNavigate();
+
+    const { chats, setChats } = useContext(AppContext);
 
     const [width, setWidth] = useState('0');
     const [border, setBorder] = useState('0');
     const [icon, setIcon] = useState(<HiSearch />);
+    const [filteredList, setFilteredList] = useState([]);
 
     function openSearch() {
         setWidth(width === '0' ? '100%' : '0');
@@ -16,18 +22,36 @@ function ChatBody({ setState, setNav }) {
         setIcon(icon.type === HiSearch ? <HiX /> : <HiSearch />);
     }
 
+    useEffect(()=>{
+        setFilteredList(chats)
+    },[chats])
+
+    useEffect(()=>{
+        axios.get('/get-chat-list')
+        .then((res)=>{
+            setChats(res.data);
+            setFilteredList(res.data)
+        }).catch(({code, message})=>{
+            navigate('/error',{ state:{code, message}, replace: true})
+        })
+    },[navigate, setChats])
+
+    const searchForFriend = (e) =>{
+        setFilteredList(chats.filter(chat => chat.receiver_details.username.includes(e.target.value) || chat.receiver_details.fullname.includes(e.target.value)));
+    }
+
     return (
         <div style={{padding: '20px'}}>
             <div className='heading'>
                 <h4>Chats</h4>
                 <div className='search-field d-flex'>
-                    <input type="text" style={{ width: width, border: border }} placeholder="Search chats" />
+                    <input type="text" onChange={searchForFriend} style={{ width: width, border: border }} placeholder="Search chats" />
                     <button onClick={openSearch} className='trans-btn'>{icon}</button>
                 </div>
             </div>
             <div className="chat-friend-list pt-4" >
-                {!chats === null ? (
-                    <ChatFriendCard />
+                {chats.length !== 0 ? (
+                    <ChatFriendCard chats={filteredList} setChats={setChats} />
                 ) : (
                     <div className='no-chats'>
                         <h5>No chats available !</h5>

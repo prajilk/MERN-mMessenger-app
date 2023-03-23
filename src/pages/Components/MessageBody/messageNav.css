@@ -24,10 +24,29 @@
 
 .chat-header {
     cursor: pointer;
+    position: relative;
 }
 
 .chat-header img {
     border-radius: 50%;
+}
+.chat-header .online, .offline {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: .4rem;
+    left: 2.5rem;
+    border: 2px solid #282a37;
+}
+.chat-header .online {
+    background-color: #32CD32;
+}
+.chat-header .offline {
+    background-color: darkgray;
+}
+.chat-header .user-details .online-status {
+    color: #32CD32;
 }
 
 .chat-header .user-details h6 {
@@ -62,11 +81,33 @@
     margin: 5px;
     padding: 7px;
     max-width: 90%;
+    word-break: break-all;
     background-color: #3e404d;
     border-radius: 10px;
     border-bottom-left-radius: 0;
     color: #fff;
     align-self: flex-start;
+}
+.chat-message span {
+    font-size: .7rem;
+    color: rgb(184, 182, 182);
+    margin-left: 1rem;
+}
+.chat-message-sender {
+    margin: 5px;
+    padding: 7px;
+    max-width: 90%;
+    word-break: break-all;
+    background-color: #187fe0;
+    border-radius: 10px;
+    border-bottom-right-radius: 0;
+    color: #fff;
+    align-self: flex-end;
+}
+.chat-message-sender span {
+    font-size: .7rem;
+    color: rgb(224, 224, 224);
+    margin-left: 1rem;
 }
 
 form {
@@ -98,7 +139,7 @@ form .send-button {
 }
 
 
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (min-width: 320px) and (max-width: 767px) {
     .chat-area {
         height: 100%;
         margin-top: 10px;
@@ -107,8 +148,11 @@ form .send-button {
     .chat-body {
         height: 65dvh;
     }
+    .chat-header .online, .offline {
+        left: 4rem;
+    }
 }
-@media only screen and (min-width: 481px){
+@media only screen and (min-width: 768px){
     .chat-area {
         display: block;
     }

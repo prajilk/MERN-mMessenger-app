@@ -7,7 +7,7 @@ import { SocketContext } from '../../../context/SocketContext';
 import { AppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 
-function FindFriend() {
+function FindFriend({ setState, setNav }) {
 
     const [searchResults, setSearchResults] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
@@ -16,7 +16,7 @@ function FindFriend() {
     const [acceptReq, setAcceptReq] = useState(true);
 
     const socket = useContext(SocketContext);
-    const { user, setReqNotification } = useContext(AppContext);
+    const { user, setReqNotification, setActiveMessage } = useContext(AppContext);
 
     const navigate = useNavigate();
 
@@ -87,6 +87,8 @@ function FindFriend() {
 
     const acceptRequest = (recipientId, index) => {
         socket.emit('accept-request', user, recipientId);
+        setAcceptReq(false);
+        setReqNotification(false);
         setSearchResults(prevResults => {
             const updatedResults = [...prevResults];
             updatedResults[index].status = "friends";
@@ -96,6 +98,7 @@ function FindFriend() {
 
     const rejectRequest = (recipientId, index) => {
         socket.emit('reject-request', user, recipientId);
+        setReqNotification(false);
         setSearchResults(prevResults => {
             const updatedResults = [...prevResults];
             updatedResults[index].status = null;
@@ -124,6 +127,14 @@ function FindFriend() {
             return updatedResults;
         });
         setReqNotification(false);
+    }
+
+    const readyToSendMessage = (recipientId) => {
+        setActiveMessage(recipientId)
+        hideFindFriend();
+        setNav('chat');
+        setState(true)
+        socket.emit('ready-to-send-message', user, recipientId);
     }
 
     return (
@@ -164,7 +175,7 @@ function FindFriend() {
                                     </div>}
 
                                     {data.status === 'friends' && <div>
-                                        <button className='frnd-card-lg-btn'>Message</button>
+                                        <button className='frnd-card-lg-btn' onClick={() => readyToSendMessage(data._id)}>Message</button>
                                     </div>}
                                 </div>
                                 <hr className='m-0' />

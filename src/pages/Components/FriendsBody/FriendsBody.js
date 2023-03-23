@@ -7,9 +7,10 @@ import { AppContext } from '../../../context/AppContext';
 import { SocketContext } from '../../../context/SocketContext';
 import axios from '../../../api/axios';
 
-function FriendsBody() {
+function FriendsBody({ setState, setNav }) {
 
     const [friends, setFriends] = useState([]);
+    const [filteredList, setFilteredList] = useState([]);
     const [width, setWidth] = useState('0');
     const [border, setBorder] = useState('0');
     const [icon, setIcon] = useState(<HiSearch />);
@@ -22,9 +23,11 @@ function FriendsBody() {
             axios.get('/get-friends')
             .then((response)=>{
                 setFriends(response.data.friendsList);
+                setFilteredList(response.data.friendsList);
             })
             socket.on('update-friend-list', (frndList)=>{
                 setFriends(frndList);
+                setFilteredList(frndList);
             })
         } catch (error) {
             
@@ -42,7 +45,7 @@ function FriendsBody() {
     }
 
     const searchForFriend = (e) =>{
-        console.log(friends.filter(frnd => frnd.username.includes(e.target.value)));
+        setFilteredList(friends.filter(frnd => frnd.username.includes(e.target.value) || frnd.fullname.includes(e.target.value)));
     }
 
     return (
@@ -62,7 +65,7 @@ function FriendsBody() {
             </div>
             <div className="chat-friend-list pt-4">
                 {friends.length !== 0 ? (
-                    <FriendCard friends={friends}/>
+                    <FriendCard friends={filteredList} setState={setState} setNav={setNav} />
                 ) : (
                     <div className='no-chats'>
                         <h5>No friends available !</h5>
