@@ -29,7 +29,7 @@ export default function Signin() {
             { 
                 email, 
                 password 
-            }
+            }, { withCredentials: true }
         ).then((res)=>{
             if(res.data.error){
                 setLoginError(true)

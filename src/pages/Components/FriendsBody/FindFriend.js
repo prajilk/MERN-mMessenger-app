@@ -36,7 +36,7 @@ function FindFriend({ setState, setNav }) {
             return;
         }
         if (match[0] === e.target.value) {
-            axios.post('/find-friends', { query: e.target.value })
+            axios.post('/find-friends', { query: e.target.value }, {withCredentials: true})
                 .then((res) => {
                     res.data.searchResults.length === 0 && setIsResult(true);
                     setIsResultLoaded(true);
@@ -62,7 +62,7 @@ function FindFriend({ setState, setNav }) {
     }
 
     useEffect(() => {
-        axios.get('/get-friends-requests')
+        axios.get('/get-friends-requests', {withCredentials: true})
         .then((res) => {
             setFriendRequests(res.data.frndReqs);
             if (res.data.frndReqs.length !== 0) setReqNotification(true);

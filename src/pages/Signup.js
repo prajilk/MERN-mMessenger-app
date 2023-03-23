@@ -33,7 +33,7 @@ export default function Signup() {
             username,
             email,
             password
-        }).then((response) => {
+        }, { withCredentials: true }).then((response) => {
             if (response.data.success) {
                 navigate('/signin');
             } else {

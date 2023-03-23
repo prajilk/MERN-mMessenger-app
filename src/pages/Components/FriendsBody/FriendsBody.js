@@ -19,7 +19,7 @@ function FriendsBody({ setState, setNav }) {
 
     useEffect(() => {
         try {
-            axios.get('/get-friends')
+            axios.get('/get-friends', {withCredentials: true})
             .then((response)=>{
                 setFriends(response.data.friendsList);
                 setFilteredList(response.data.friendsList);

@@ -27,7 +27,7 @@ function ChatBody({ setState, setNav }) {
     },[chats])
 
     useEffect(()=>{
-        axios.get('/get-chat-list')
+        axios.get('/get-chat-list', {withCredentials: true})
         .then((res)=>{
             setChats(res.data);
             setFilteredList(res.data)
