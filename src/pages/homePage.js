@@ -33,8 +33,9 @@ function ChatsPage() {
 
     useEffect(() => {
         try {
-            axios.get('/session')
-                .then((res) => {
+            axios.get('/session').then((res) => {
+                    console.log(res.data.user);
+                    console.log(res);
                     if (res.data.user === undefined) {
                         navigate('/signin')
                     } else {
@@ -45,7 +46,7 @@ function ChatsPage() {
                     navigate('/error', { state: { code, message }, replace: true })
                 })
         } catch { }
-    }, [navigate, socket])
+    }, [])
 
     useEffect(() => {
         if (Object.keys(user).length !== 0) {
@@ -116,7 +117,7 @@ function ChatsPage() {
                             <p>Start sending messages to friends.</p>
                         </div>
                     ) : (
-                        <AppContext.Provider value={{activeMessage, setActiveMessage, chats, setChats, user}}>
+                        <AppContext.Provider value={{ activeMessage, setActiveMessage, chats, setChats, user }}>
                             <MessageBody />
                         </AppContext.Provider>
                     )}
