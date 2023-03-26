@@ -2,10 +2,12 @@ import { HiKey, HiEye, HiEyeOff, HiMail } from "react-icons/hi";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios"
+import WaitingForResModal from "./Components/Modal/WaitingForResModal";
 
 export default function Signin() {
 
     const [passVisibility, setPassVisibility] = useState(<HiEye />);
+    const [modal, setModal] = useState(false);
 
     const changePassVisibility = () => {
         if (passVisibility.type === HiEye) {
@@ -25,18 +27,19 @@ export default function Signin() {
 
     const onLogin = (e) => {
         e.preventDefault();
-        axios.post("/signin", 
-            { 
-                email, 
-                password 
-            }, { withCredentials: true }
-        ).then((res)=>{
-            if(res.data.error){
-                setLoginError(true)
-            } else {
-                return navigate('/');
+        setModal(true);
+        axios.post("/signin",
+            {
+                email,
+                password
             }
-        }).catch();
+        ).then(() => {
+            setModal(false);
+            return navigate('/');
+        }).catch((res)=>{
+            setModal(false);
+            if (res.response.data.error) setLoginError(true)
+        })
     };
 
     return (
@@ -48,17 +51,17 @@ export default function Signin() {
                 <form onSubmit={onLogin}>
                     <h3>Sign in</h3>
                     <p>Log in to your account</p>
-                    { loginError ? 
+                    {loginError ?
                         <p className="bg-danger px-2 py-1 text-white rounded">
                             <small>Email or password is incorrect! try again.</small>
                         </p> : ''
                     }
                     <div className="input-wrapper mb-3">
-                        <input 
-                            type="email" 
-                            className="form-control" 
-                            name="email" 
-                            id="email" 
+                        <input
+                            type="email"
+                            className="form-control"
+                            name="email"
+                            id="email"
                             placeholder="Email"
                             required
                             onChange={(e) => setEmail(e.target.value)} />
@@ -66,11 +69,11 @@ export default function Signin() {
 
                     </div>
                     <div className="input-wrapper mb-3">
-                        <input 
-                            type="password" 
-                            className="form-control" 
-                            name="password" 
-                            id="password" 
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="password"
+                            id="password"
                             placeholder="Password"
                             required
                             onChange={(e) => setPassword(e.target.value)} />
@@ -83,6 +86,7 @@ export default function Signin() {
             <div className="outside-card">
                 <p>Don't you have an account? <span><Link to="/signup">Sign up</Link></span></p>
             </div>
+            {modal && <WaitingForResModal/>}
         </div>
     )
 }

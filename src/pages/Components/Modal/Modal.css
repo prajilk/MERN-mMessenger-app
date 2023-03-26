@@ -38,6 +38,10 @@
     font-weight: 200;
 }
 
+.spinner-border {
+    color: #01acfc;
+}
+
 @keyframes scaleUp {
     0% {
         transform: scale(0);

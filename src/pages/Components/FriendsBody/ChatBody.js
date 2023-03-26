@@ -27,10 +27,12 @@ function ChatBody({ setState, setNav }) {
     },[chats])
 
     useEffect(()=>{
-        axios.get('/get-chat-list', {withCredentials: true})
+        axios.get('/get-chat-list')
         .then((res)=>{
+
             setChats(res.data);
             setFilteredList(res.data)
+
         }).catch(({code, message})=>{
             navigate('/error',{ state:{code, message}, replace: true})
         })

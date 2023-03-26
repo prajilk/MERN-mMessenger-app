@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FaUserPlus } from 'react-icons/fa';
 import { HiX, HiSearch } from 'react-icons/hi';
 import FriendCard from './FriendCard';
@@ -17,13 +18,18 @@ function FriendsBody({ setState, setNav }) {
     const { reqNotification } = useContext(AppContext);
     const socket = useContext(SocketContext);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         try {
-            axios.get('/get-friends', {withCredentials: true})
+            axios.get('/get-friends')
             .then((response)=>{
                 setFriends(response.data.friendsList);
                 setFilteredList(response.data.friendsList);
+            }).catch(({code, message})=>{
+                navigate('/error',{ state:{code, message}, replace: true})
             })
+
             socket.on('update-friend-list', (frndList)=>{
                 setFriends(frndList);
                 setFilteredList(frndList);
@@ -31,7 +37,7 @@ function FriendsBody({ setState, setNav }) {
         } catch (error) {
             
         }
-    }, [socket])
+    }, [navigate, socket])
 
     function openSearch() {
         setWidth(width === '0' ? 'calc(100% - 30px)' : '0');

@@ -33,20 +33,19 @@ function ChatsPage() {
 
     useEffect(() => {
         try {
-            axios.get('/session', {withCredentials: true}).then((res) => {
-                    console.log(res.data.user);
-                    console.log(res);
-                    if (res.data.user === undefined) {
-                        navigate('/signin')
-                    } else {
-                        setUser(res.data.user);
-                        socket.emit('joinRoom', res.data.user._id);
-                    }
-                }).catch(({ code, message }) => {
-                    navigate('/error', { state: { code, message }, replace: true })
-                })
+            axios.get('/validate-user').then((res) => {
+                console.log(res.data);
+                if(res.data.error) navigate('/signin', {replace: true})
+                else {
+                    setUser(res.data.user);
+                    socket.emit('joinRoom', res.data.user._id);
+                }
+            }).catch((err) => {
+                if(err.response?.data.error) navigate('/signin', {replace: true});
+                else navigate('/error', { state: { code: err.code, message: err.message }, replace: true })
+            })
         } catch { }
-    }, [])
+    }, [navigate, socket])
 
     useEffect(() => {
         if (Object.keys(user).length !== 0) {

@@ -14,8 +14,8 @@ function Modal({ closeModal, user }) {
             .then(()=>{
                 socket.emit('signout', user._id);
                 navigate('/signin');
-            }).catch((err)=>{
-                console.log(err);
+            }).catch(({code, message})=>{
+                navigate('/error',{ state:{code, message}, replace: true})
             })
     }
 

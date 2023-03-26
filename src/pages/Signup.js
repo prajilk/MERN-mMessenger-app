@@ -2,6 +2,7 @@ import { HiUser, HiKey, HiEye, HiEyeOff, HiMail } from "react-icons/hi";
 import { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom'
 import axios from "../api/axios";
+import WaitingForResModal from "./Components/Modal/WaitingForResModal";
 
 export default function Signup() {
 
@@ -23,17 +24,20 @@ export default function Signup() {
     const [password, setPassword] = useState();
     const [usernameError, setUsernameError] = useState();
     const [emailError, setEmailError] = useState(false);
+    const [modal, setModal] = useState(false);
 
     const navigate = useNavigate();
 
     const onSignup = async (e) => {
         e.preventDefault();
+        setModal(true);
         axios.post("/signup", {
             fullname,
             username,
             email,
             password
-        }, { withCredentials: true }).then((response) => {
+        }).then((response) => {
+            setModal(false);
             if (response.data.success) {
                 navigate('/signin');
             } else {
@@ -51,7 +55,10 @@ export default function Signup() {
                     setEmailError(true);
                 }
             }
-        }).catch();
+        }).catch(({code, message})=>{
+            setModal(false);
+            navigate('/error',{ state:{code, message}, replace: true})
+        })
     };
 
     return (
@@ -120,6 +127,7 @@ export default function Signup() {
             <div className="outside-card">
                 <p>Already have an account? <span><Link to="/signin">Sign in</Link></span></p>
             </div>
+            {modal && <WaitingForResModal/>}
         </div>
     )
 }
