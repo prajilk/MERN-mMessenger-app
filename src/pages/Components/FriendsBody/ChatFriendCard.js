@@ -38,8 +38,10 @@ function ChatFriendCard({ chats, setChats }) {
             document.getElementById('friends-nav').style.display = 'none';
         }
 
-        document.getElementById(id).style.cssText = 'color: ;font-weight: 400;';
-        document.getElementById(id+'msgCount').style.display = 'none';
+        if(document.getElementById(id) !== null){
+            document.getElementById(id).style.cssText = 'color: ; font-weight: 400;';
+            document.getElementById(id+'msgCount').style.display = 'none';
+        }
         setActiveMessage(id);
     }
 

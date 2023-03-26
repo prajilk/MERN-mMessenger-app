@@ -8,6 +8,7 @@ function FriendCard({ friends, setState, setNav }) {
     const socket = useContext(SocketContext);
     const { user, setActiveMessage } = useContext(AppContext);
 
+
     function hideFindFriend() {
         document.getElementById('find-friend-div').style.transform = 'translateX(100%)';
     }
@@ -18,20 +19,21 @@ function FriendCard({ friends, setState, setNav }) {
         hideFindFriend();
         setNav('chat');
         setState(true)
+        window.location.reload();
     }
 
     return (
         <>
-            {friends.length !== 0 ? friends.map((friend) => {
+            {friends.length !== 0 ? friends.map((friend, index) => {
                 return (
-                    <div className="frnd-card d-flex p-3 mb-2">
+                    <div className="frnd-card d-flex p-3 mb-2" key={index}>
                         <img src={getAvatar(friend.fullname, friend.color)} alt=".." width={'50px'} />
                         <div className='name-conatiner ms-3'>
                             <h6>{friend.fullname}</h6>
                             <small>@{friend.username}</small>
                         </div>
                         <div>
-                            <button className='frnd-card-lg-btn' onClick={()=>readyToSendMessage(friend._id)}>Message</button>
+                            <button className='frnd-card-lg-btn' onClick={() => readyToSendMessage(friend._id)}>Message</button>
                         </div>
                     </div>
                 )

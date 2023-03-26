@@ -34,7 +34,7 @@ function ChatsPage() {
     useEffect(() => {
         try {
             axios.get('/validate-user').then((res) => {
-                console.log(res.data);
+                
                 if(res.data.error) navigate('/signin', {replace: true})
                 else {
                     setUser(res.data.user);

@@ -108,7 +108,7 @@ function MessageBody() {
         <div className='chat-container'>
             <div className="chat-header d-flex">
                 {width <= 767 ?
-                    <div onClick={width <= 480 ? goBackToFriends : ''}>
+                    <div onClick={width <= 480 ? goBackToFriends : undefined }>
                         {width <= 767 ? <span className='text-white me-2' onClick={showMessage}><HiArrowLeft /></span> : ''}
                         {chats.length !== 0 && <img src={getAvatar(currentChat.receiver_details.fullname, currentChat.receiver_details.color)} alt="..." width={'50px'} />}
                     </div> :
@@ -118,7 +118,7 @@ function MessageBody() {
                 <div className={isOnline ? 'online':'offline'}></div>
                 <div className='name-conatiner user-details ms-3'>
                     {chats.length !== 0 && <h6>{currentChat.receiver_details.fullname}</h6>}
-                    <small className={isOnline && 'online-status'}>{isOnline ? onlineStatus : 'offline'}</small>
+                    <small className={isOnline ? 'online-status' : undefined}>{isOnline ? onlineStatus : 'offline'}</small>
                 </div>
             </div>
             <div className='body-container'>
