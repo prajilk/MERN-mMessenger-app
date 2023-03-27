@@ -8,12 +8,14 @@ function ChatFriendCard({ chats, setChats }) {
     const { activeMessage, setActiveMessage } = useContext(AppContext);
     const socket = useContext(SocketContext);
 
+    console.log(chats);
+
     useEffect(() => {
 
         socket.on('recieve-message', ({ sender, message, timestamp }) => {
 
             document.getElementById(sender).style.cssText = 'color: #3380fc; font-weight: bolder;';
-            document.getElementById(sender+'msgCount').style.display = 'block';
+            document.getElementById(sender + 'msgCount').style.display = 'block';
 
             const newObject = { sender: sender, message: message, timestamp: timestamp }
 
@@ -38,9 +40,9 @@ function ChatFriendCard({ chats, setChats }) {
             document.getElementById('friends-nav').style.display = 'none';
         }
 
-        if(document.getElementById(id) !== null){
+        if (document.getElementById(id) !== null) {
             document.getElementById(id).style.cssText = 'color: ; font-weight: 400;';
-            document.getElementById(id+'msgCount').style.display = 'none';
+            document.getElementById(id + 'msgCount').style.display = 'none';
         }
         setActiveMessage(id);
     }
@@ -64,7 +66,7 @@ function ChatFriendCard({ chats, setChats }) {
                             </div>
                             <div className='d-flex justify-content-between w-100'>
                                 {chat.chats.length !== 0 && <small id={chat.receiver_details._id}>{chat.chats[0].message}</small>}
-                                {chat.chats.length !== 0 && <div className="new-message-alert" id={chat.receiver_details._id+'msgCount'}><small>new</small></div>}
+                                {chat.chats.length !== 0 && <div className="new-message-alert" id={chat.receiver_details._id + 'msgCount'}><small>new</small></div>}
                             </div>
                         </div>
                     </div>

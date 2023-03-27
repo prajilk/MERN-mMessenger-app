@@ -19,7 +19,7 @@ function FriendCard({ friends, setState, setNav }) {
         hideFindFriend();
         setNav('chat');
         setState(true)
-        window.location.reload();
+        // window.location.reload();
     }
 
     return (

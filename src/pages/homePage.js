@@ -28,20 +28,21 @@ function ChatsPage() {
     const [chatBody, setChatBody] = useState(true);
     const [modal, setModal] = useState(false);
     const [reqNotification, setReqNotification] = useState(false);
+    const [filteredList, setFilteredList] = useState([]);
 
     const socket = useContext(SocketContext);
 
     useEffect(() => {
         try {
             axios.get('/validate-user').then((res) => {
-                
-                if(res.data.error) navigate('/signin', {replace: true})
+
+                if (res.data.error) navigate('/signin', { replace: true })
                 else {
                     setUser(res.data.user);
                     socket.emit('joinRoom', res.data.user._id);
                 }
             }).catch((err) => {
-                if(err.response?.data.error) navigate('/signin', {replace: true});
+                if (err.response?.data.error) navigate('/signin', { replace: true });
                 else navigate('/error', { state: { code: err.code, message: err.message }, replace: true })
             })
         } catch { }
@@ -101,7 +102,17 @@ function ChatsPage() {
                     </div>
                 </div>
                 <div className="friends-nav col-md-4 p-0" id='friends-nav'>
-                    <AppContext.Provider value={{ user, reqNotification, setReqNotification, chats, setChats, activeMessage, setActiveMessage }}>
+                    <AppContext.Provider value={{
+                        user,
+                        reqNotification,
+                        setReqNotification,
+                        chats,
+                        setChats,
+                        activeMessage,
+                        setActiveMessage,
+                        filteredList,
+                        setFilteredList
+                    }}>
 
                         <FindFriend setState={setChatBody} setNav={setNavActive} />
                         <UserProfile />

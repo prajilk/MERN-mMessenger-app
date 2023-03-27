@@ -9,12 +9,11 @@ function ChatBody({ setState, setNav }) {
 
     const navigate = useNavigate();
 
-    const { chats, setChats } = useContext(AppContext);
+    const { chats, setChats, filteredList, setFilteredList } = useContext(AppContext);
 
     const [width, setWidth] = useState('0');
     const [border, setBorder] = useState('0');
     const [icon, setIcon] = useState(<HiSearch />);
-    const [filteredList, setFilteredList] = useState([]);
 
     function openSearch() {
         setWidth(width === '0' ? '100%' : '0');
@@ -22,28 +21,28 @@ function ChatBody({ setState, setNav }) {
         setIcon(icon.type === HiSearch ? <HiX /> : <HiSearch />);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setFilteredList(chats)
-    },[chats])
+    }, [chats, setFilteredList])
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get('/get-chat-list')
-        .then((res)=>{
+            .then((res) => {
 
-            setChats(res.data);
-            setFilteredList(res.data)
+                setChats(res.data);
+                setFilteredList(res.data)
 
-        }).catch(({code, message})=>{
-            navigate('/error',{ state:{code, message}, replace: true})
-        })
-    },[navigate, setChats])
+            }).catch(({ code, message }) => {
+                navigate('/error', { state: { code, message }, replace: true })
+            })
+    }, [navigate, setChats, setFilteredList])
 
-    const searchForFriend = (e) =>{
+    const searchForFriend = (e) => {
         setFilteredList(chats.filter(chat => chat.receiver_details.username.includes(e.target.value) || chat.receiver_details.fullname.includes(e.target.value)));
     }
 
     return (
-        <div style={{padding: '20px'}}>
+        <div style={{ padding: '20px' }}>
             <div className='heading'>
                 <h4>Chats</h4>
                 <div className='search-field d-flex'>
@@ -58,7 +57,7 @@ function ChatBody({ setState, setNav }) {
                     <div className='no-chats'>
                         <h5>No chats available !</h5>
                         <p>Start a new chat now.</p>
-                        <button onClick={()=>{
+                        <button onClick={() => {
                             setState(false);
                             setNav('friend');
                         }}>Chat now</button>
