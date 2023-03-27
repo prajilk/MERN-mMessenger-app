@@ -74,6 +74,22 @@
     padding-left: 30px;
     padding-right: 30px;
 }
+.guest-btn {
+    background: transparent;
+    border: 2px solid #005ef3;
+    outline: 0;
+    width: 100%;
+    color: #fff;
+    border-radius: 4px;
+    padding: .4rem;
+    font-size: .75rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.guest-btn:hover {
+    border: 2px solid #0553cf;
+    background-color: #0553cf;
+}
 .card form .btn {
     background-color: #005ef3;
     color: white;

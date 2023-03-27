@@ -25,16 +25,22 @@ export default function Signin() {
     // Sent the email and password to server to authenticate
     axios.post("/signin", { email, password }).then(() => {
 
-        setModal(false); // Deactivate the Loading modal after server response!
-        return navigate("/"); // Successfully authenticated the user, redirect to Homepage.
+      setModal(false); // Deactivate the Loading modal after server response!
+      return navigate("/"); // Successfully authenticated the user, redirect to Homepage.
 
-      }).catch((res) => {
+    }).catch((res) => {
 
-        setModal(false); // Deactivate the Loading modal after server response!
-        if (res.response.data.error) setLoginError(true); // Set error in the Login error state.
-        
-      });
+      setModal(false); // Deactivate the Loading modal after server response!
+      if (res.response.data.error) setLoginError(true); // Set error in the Login error state.
+
+    });
   };
+
+  // Signin as guest
+  const signInAsGuest = () => {
+    setEmail('guest@gmail.com');
+    setPassword('guest123');
+  }
 
   return (
     <div className="login-page">
@@ -57,6 +63,7 @@ export default function Signin() {
               type="email"
               className="form-control"
               name="email"
+              value={email}
               placeholder="Email"
               required
               onChange={(e) => setEmail(e.target.value)}
@@ -71,6 +78,7 @@ export default function Signin() {
               className="form-control"
               name="password"
               placeholder="Password"
+              value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -83,6 +91,9 @@ export default function Signin() {
           </div>
           <button className="btn" type="submit">
             Sign in
+          </button>
+          <button className="guest-btn mt-2" onClick={signInAsGuest} type="button" >
+            Sign in as guest user
           </button>
         </form>
       </div>
