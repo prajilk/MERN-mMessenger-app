@@ -6,17 +6,9 @@ import WaitingForResModal from "./Components/Modal/WaitingForResModal";
 
 export default function Signup() {
 
-    const [passVisibility, setPassVisibility] = useState(<HiEye />);
+    const [passVisibility, setPassVisibility] = useState(false);
 
-    const changePassVisibility = () => {
-        if (passVisibility.type === HiEye) {
-            setPassVisibility(<HiEyeOff />)
-            document.getElementById('password').type = 'text';
-        } else {
-            setPassVisibility(<HiEye />)
-            document.getElementById('password').type = 'password';
-        }
-    }
+    const changePassVisibility = () => setPassVisibility(!passVisibility);
 
     const [username, setUsername] = useState();
     const [email, setEmail] = useState();
@@ -41,11 +33,11 @@ export default function Signup() {
             if (response.data.success) {
                 navigate('/signin');
             } else {
-                if(response.data.error === 'email') {
+                if (response.data.error === 'email') {
                     setEmailError(true);
-                    setUsernameError("username: "+username)
+                    setUsernameError("username: " + username)
                     return;
-                } else if(response.data.error === 'username'){
+                } else if (response.data.error === 'username') {
                     setUsernameError('username already taken!')
                     setEmailError(false)
                     return;
@@ -55,14 +47,14 @@ export default function Signup() {
                     setEmailError(true);
                 }
             }
-        }).catch(({code, message})=>{
+        }).catch(({ code, message }) => {
             setModal(false);
-            navigate('/error',{ state:{code, message}, replace: true})
+            navigate('/error', { state: { code, message }, replace: true })
         })
     };
 
     return (
-        <div className="signup-page" style={{width: '100%'}}>
+        <div className="signup-page" style={{ width: '100%' }}>
 
             <div className="logo-container">
                 <img src={process.env.PUBLIC_URL + "/logo_w.png"} alt="..." />
@@ -104,22 +96,23 @@ export default function Signup() {
                             required
                             onChange={(e) => {
                                 setUsername(e.target.value.replace(/\s+/g, '_'))
-                                setUsernameError('username: '+e.target.value.replace(/\s+/g, '_'))
+                                setUsernameError('username: ' + e.target.value.replace(/\s+/g, '_'))
                             }} />
                         <i className="input-icons"><HiUser /></i>
                         {username ? <p style={{ color: usernameError === 'username already taken!' ? 'red' : 'darkgray' }}>{usernameError}</p> : ''}
                     </div>
                     <div className="input-wrapper mb-3">
                         <input
-                            type="password"
+                            type={passVisibility ? "text" : "password"}
                             className="form-control"
                             name="password"
-                            id="password"
                             placeholder="Create password"
                             required
                             onChange={(e) => setPassword(e.target.value)} />
                         <i className="input-icons"><HiKey /></i>
-                        <i className="pass-visibility" onClick={changePassVisibility}>{passVisibility}</i>
+                        <i className="pass-visibility" onClick={changePassVisibility}>
+                            {passVisibility ? <HiEyeOff /> : <HiEye />}
+                        </i>
                     </div>
                     <button type="submit" className="btn">Create account</button>
                 </form>
@@ -127,7 +120,7 @@ export default function Signup() {
             <div className="outside-card">
                 <p>Already have an account? <span><Link to="/signin">Sign in</Link></span></p>
             </div>
-            {modal && <WaitingForResModal/>}
+            {modal && <WaitingForResModal />}
         </div>
     )
 }
