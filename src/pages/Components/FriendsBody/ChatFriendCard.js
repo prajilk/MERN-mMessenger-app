@@ -8,8 +8,6 @@ function ChatFriendCard({ chats, setChats }) {
     const { activeMessage, setActiveMessage } = useContext(AppContext);
     const socket = useContext(SocketContext);
 
-    console.log(chats);
-
     useEffect(() => {
 
         socket.on('recieve-message', ({ sender, message, timestamp }) => {
@@ -46,6 +44,15 @@ function ChatFriendCard({ chats, setChats }) {
         }
         setActiveMessage(id);
     }
+
+    useEffect(() => {
+        if (activeMessage !== null) {
+            if (document.getElementById(activeMessage) !== null)
+                document.getElementById(activeMessage).style.cssText = 'color: ; font-weight: 400;';
+            if (document.getElementById(activeMessage + 'msgCount') !== null)
+                document.getElementById(activeMessage + 'msgCount').style.display = 'none';
+        }
+    }, [chats, activeMessage])
 
     const GetTime = ({ dateObj }) => {
         dateObj = new Date(dateObj);
