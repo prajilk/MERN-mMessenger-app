@@ -89,11 +89,16 @@
     flex-direction: column;
 }
 
+.chat-body> :first-child {
+    margin-top: auto !important;
+    /* use !important to prevent breakage from child margin settings */
+}
+
 .chat-body::-webkit-scrollbar {
     display: none;
 }
 
-.chat-date-recv,
+/* .chat-date-recv,
 .chat-date-sender {
     font-size: .7rem;
     color: gray;
@@ -102,6 +107,21 @@
 
 .chat-date-recv {
     text-align: right;
+} */
+
+.chat-date-con {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.chat-date {
+    text-align: center;
+    font-size: .7rem;
+    color: rgb(184, 182, 182);
+    background-color: #3e404d;
+    padding: 3px 10px;
+    border-radius: 5px;
 }
 
 .chat-message {

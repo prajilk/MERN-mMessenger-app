@@ -78,7 +78,14 @@ function MessageBody() {
         messageEndRef.current?.scrollIntoView();
     }, [chats, currentMessages])
 
+    let prevDate = '';
     const GetChatDate = ({ dateObj, classValue }) => {
+
+        if (prevDate !== new Date(dateObj).toDateString()) {
+            prevDate = new Date(dateObj).toDateString();
+        } else {
+            return
+        }
 
         dateObj = new Date(dateObj);
         // Create a new Date object for today's date
@@ -157,7 +164,9 @@ function MessageBody() {
                 <div className="chat-body mt-4">
                     {currentMessages.map((chat, index) => {
                         return (<React.Fragment key={index}>
-                            <GetChatDate dateObj={chat.timestamp} classValue={chat.sender === activeMessage ? "chat-date-sender" : "chat-date-recv"} />
+                            <div className='chat-date-con'>
+                                <GetChatDate dateObj={chat.timestamp} classValue={'chat-date'} />
+                            </div>
                             <div
                                 className={chat.sender === activeMessage ? "chat-message" : "chat-message-sender"}>
                                 {chat.message}
