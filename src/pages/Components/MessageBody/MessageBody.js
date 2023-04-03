@@ -9,9 +9,12 @@ function MessageBody() {
     const { activeMessage, setActiveMessage, chats, setChats, user } = useContext(AppContext);
     const socket = useContext(SocketContext);
 
+    console.log(chats);
+
     const [currentMessages, setCurrentMessages] = useState([]);
     const [isOnline, setIsOnline] = useState(false);
     const [onlineStatus, setOnlineStatus] = useState('online');
+    const messageEndRef = useRef();
 
     let currentChat = chats.filter((chat) => {
         return chat.receiver_details._id === activeMessage;
@@ -60,7 +63,7 @@ function MessageBody() {
             if (chat.receiver_details._id === activeMessage) {
                 return {
                     ...chat,
-                    chats: [newObject, ...chat.chats],
+                    chats: [...chat.chats, newObject],
                 };
             } else {
                 return chat;
@@ -71,8 +74,11 @@ function MessageBody() {
         inputRef.current.value = '';
     }
 
-    const GetChatDate = ({ dateObj, classValue }) => {
+    useEffect(() => {
+        messageEndRef.current?.scrollIntoView();
+    }, [chats, currentMessages])
 
+    const GetChatDate = ({ dateObj, classValue }) => {
 
         dateObj = new Date(dateObj);
         // Create a new Date object for today's date
@@ -125,7 +131,7 @@ function MessageBody() {
                 setOnlineStatus('typing...');
                 setTimeout(() => {
                     setOnlineStatus('online');
-                }, 3000);
+                }, 2000);
             }
         });
     }, [onlineStatus, activeMessage, socket])
@@ -153,13 +159,13 @@ function MessageBody() {
                         return (<React.Fragment key={index}>
                             <GetChatDate dateObj={chat.timestamp} classValue={chat.sender === activeMessage ? "chat-date-sender" : "chat-date-recv"} />
                             <div
-                                className={chat.sender === activeMessage ? "chat-message" : "chat-message-sender"}
-                            >
+                                className={chat.sender === activeMessage ? "chat-message" : "chat-message-sender"}>
                                 {chat.message}
                                 <GetTime dateObj={chat.timestamp} />
                             </div>
                         </React.Fragment>)
                     })}
+                    <div ref={messageEndRef} />
                 </div>
             </div>
             <form onSubmit={sendMsg}>

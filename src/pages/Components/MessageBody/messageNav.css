@@ -12,9 +12,11 @@
     color: darkgray;
     font-size: 1rem;
 }
+
 .chat-friend-list {
     animation: .5s ease-out 0s 1 slideInFromLeft;
 }
+
 .chat-area {
     background-color: #282a37;
     display: flex;
@@ -30,7 +32,9 @@
 .chat-header img {
     border-radius: 50%;
 }
-.chat-header .online, .offline {
+
+.chat-header .online,
+.offline {
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -39,12 +43,15 @@
     left: 2.5rem;
     border: 2px solid #282a37;
 }
+
 .chat-header .online {
     background-color: #32CD32;
 }
+
 .chat-header .offline {
     background-color: darkgray;
 }
+
 .chat-header .user-details .online-status {
     color: #32CD32;
 }
@@ -79,21 +86,24 @@
     padding: 20px;
     overflow-y: scroll;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 .chat-body::-webkit-scrollbar {
     display: none;
 }
 
-.chat-date-recv, .chat-date-sender {
+.chat-date-recv,
+.chat-date-sender {
     font-size: .7rem;
     color: gray;
     margin: 0 5px;
 }
+
 .chat-date-recv {
     text-align: right;
 }
+
 .chat-message {
     margin: 5px 5px 0 5px;
     padding: 7px;
@@ -105,11 +115,13 @@
     color: #fff;
     align-self: flex-start;
 }
+
 .chat-message span {
     font-size: .7rem;
     color: rgb(184, 182, 182);
     margin-left: 1rem;
 }
+
 .chat-message-sender {
     margin: 5px 5px 0 5px;
     padding: 7px;
@@ -121,6 +133,7 @@
     color: #fff;
     align-self: flex-end;
 }
+
 .chat-message-sender span {
     font-size: .7rem;
     color: rgb(224, 224, 224);
@@ -162,14 +175,18 @@ form .send-button {
         margin-top: 10px;
         display: none;
     }
+
     .chat-body {
         height: 65dvh;
     }
-    .chat-header .online, .offline {
+
+    .chat-header .online,
+    .offline {
         left: 4rem;
     }
 }
-@media only screen and (min-width: 768px){
+
+@media only screen and (min-width: 768px) {
     .chat-area {
         display: block;
     }

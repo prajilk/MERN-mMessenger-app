@@ -28,7 +28,7 @@ function ChatBody({ setState, setNav }) {
     useEffect(() => {
         axios.get('/get-chat-list')
             .then((res) => {
-
+                res.data.map((data) => data.chats.reverse())
                 setChats(res.data);
                 setFilteredList(res.data)
 
