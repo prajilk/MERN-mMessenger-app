@@ -6,8 +6,15 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.server-loading {
+    color: yellow;
+    position: absolute;
+    top: 0;
 }
 
 .signoutModal {
@@ -18,6 +25,7 @@
     color: #fff;
     animation: .5s ease-out 0s 1 scaleUp;
 }
+
 .modalHead h5 {
     font-weight: 400;
     font-size: 1.3rem;
@@ -33,6 +41,7 @@
     display: flex;
     justify-content: space-evenly;
 }
+
 .modalFooter button {
     color: #fff;
     font-weight: 300;
